@@ -52,7 +52,7 @@ So we have three commands:
 First we create the following `dockerfile`:
 
 ```dockerfile
-FROM node:14
+FROM node:latest
 MAINTAINER albamr09
 
 # Add common user
@@ -66,9 +66,10 @@ RUN chmod -R 755 /home/user/src/
 
 USER user 
 
-# Install app dependencies
-COPY ./src/package*.json ./
+# Copy with user as owner
+COPY --chown=user:user ./src/package*.json ./
 
+# Install app dependencies
 RUN npm install
 
 # Copy and override src folder
@@ -88,7 +89,7 @@ Once we have our `Dockerfile` created we create a `.dockerignore` file, so we do
 */npm-debug.log
 ```
 
-And we build the image with the following command:
+This only works if we do not specify the flag `--no-cache`. And we build the image with the following command:
 
 ```console
 $ docker build .
@@ -165,7 +166,6 @@ services:
 
 script:
   - docker-compose run app sh -c "npm test"
-  
 ```
 
 Set in the `Travis CI` client the `HOST` and `PORT` environment variables.

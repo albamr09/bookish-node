@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:latest
 MAINTAINER albamr09
 
 # Add common user
@@ -12,10 +12,16 @@ RUN chmod -R 755 /home/user/src/
 
 USER user 
 
-# Install app dependencies
-COPY ./src/package*.json ./
+# Copy with user as owner
+COPY --chown=user:user ./src/package*.json ./
 
+# Install app dependencies
 RUN npm install
 
 # Copy and override src folder
 COPY ./src .
+
+##container exposed network port number
+#EXPOSE 7500
+##command to run within the container
+#CMD ['node', 'app.js']
