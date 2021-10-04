@@ -37,8 +37,8 @@ We modify the `scripts` object of `package.json`:
 
 ```json
 "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
+    "start": "node app",
+    "dev": "nodemon app",
     "test": "jest"
 }
 ```
