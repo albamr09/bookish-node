@@ -7,7 +7,7 @@ services:
     ports:
       - "${PORT}:${PORT}"
     volumes:
-      - .:/home/user/app
+      - ./src/:/home/user/src
     command: >
       sh -c "npm run dev"
     environment:

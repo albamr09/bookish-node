@@ -8,8 +8,6 @@
 
 ### Development 
 
-- dotenv
-- nodemon
 - supertest
 - jest
 
@@ -28,7 +26,7 @@ $ npm install express mongoose jsonwebtoken
 ```
 
 ```console 
-$ npm install --save-dev dotenv nodemon supertest jest
+$ npm install --save-dev supertest jest
 ```
 
 ### Configure `package.json`
