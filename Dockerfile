@@ -25,7 +25,7 @@ RUN npm install
 # Copy and override src folder
 COPY ./src .
 
-##container exposed network port number
+# Container exposed network port number
 EXPOSE ${PORT}
 ##command to run within the container
 #CMD ['node', 'app.js']

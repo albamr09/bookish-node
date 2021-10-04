@@ -52,7 +52,7 @@ So we have three commands:
 First we create the following `dockerfile`:
 
 ```dockerfile
-FROM node:latest
+FROM alpine:latest
 MAINTAINER albamr09
 
 # Add common user
@@ -74,6 +74,9 @@ RUN npm install
 
 # Copy and override src folder
 COPY ./src .
+
+# Container exposed network port number
+EXPOSE ${PORT}
 ```
 
 Where we use the latest `LTS` version of `Node.js` (14) as the image to build, which comes with `Node.js` and `NPM` installed. Then we specify they user who maintains this container.
@@ -114,8 +117,8 @@ services:
     command: >
       sh -c "npm run dev"
     environment:
-      - HOST:${HOST}
-      - PORT:${PORT}
+      - HOST=${HOST}
+      - PORT=${PORT}
 ```
 
 Now we build the image with:
