@@ -98,6 +98,12 @@ This only works if we do not specify the flag `--no-cache`. And we build the ima
 $ docker build .
 ```
 
+To log in into a container:
+
+```console
+$ docker exec -it <container-name> bash
+```
+
 ### Configure `Docker Compose`
 
 So now we are going to configure our `Docker Compose`, therefore we create the file `docker-compose.yml` in our root folder.
@@ -141,6 +147,26 @@ $ docker-compose up
 ```
 
 ### Create database
+
+To log into `MongoDB` with the created user and database:
+
+```console
+$ mongo -u <your username> -p <your password> \\
+                --authenticationDatabase <your database name>
+```
+
+or 
+
+```console
+$ mongo -u <your username> \\ 
+        --authenticationDatabase <your database name>
+```
+
+To connect to the database use the following `URI`:
+
+```uri
+mongodb://YourUsername:YourPasswordHere@127.0.0.1:27017/your-database-name
+```
 
 ### Configure `.env`
 

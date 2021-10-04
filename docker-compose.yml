@@ -2,6 +2,7 @@ version: "3"
 
 services:
   app:
+    container_name: 'bookish_node'
     build:
       context: .
     ports:
@@ -14,3 +15,28 @@ services:
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INIT_DB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      # Make data persist on local folder named ./mongo-volume
+      - ./mongo-volume:/data/db
+      #- ${MONGO_DATA_DB}:/data/db
+      # Copy init-mongo.js to /docker-entrypoing-init.db.d/ with read-only permission
+      #- ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro 
+      # Mat mongo config
+      - ${MONGO_DATA_CONFIG}:/etc/mongo/
+    ports:
+      # Use deafult ports 27017 to 27019, and map them to the same value on the container
+      # - ${EXPOSED_MONGO_PORT}:27017
+      - '${DB_PORT_FROM}-${DB_PORT_TO}:${DB_PORT_FROM}-${DB_PORT_TO}'
+    # Specify mongo config file
+    command: ["-f", "/etc/mongo/mongod.conf"]
+
