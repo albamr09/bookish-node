@@ -7,9 +7,9 @@ services:
     ports:
       - "${PORT}:${PORT}"
     volumes:
-      - ./src/:/home/user/src
+      - ./src/:/home/user/src/
+      - /home/user/src/node_modules
     command: >
       sh -c "npm run dev"
-    environment:
-      - HOST=${HOST}
-      - PORT=${PORT}
+    env_file:
+      - .env

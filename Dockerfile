@@ -13,9 +13,9 @@ RUN chmod -R 755 /home/user/src/
 USER user 
 
 # Install app dependencies
-COPY ./src/package*.json /home/user/src/
-# Copy and override src folder
-COPY ./src /home/user/src/
+COPY ./src/package*.json ./
 
 RUN npm install
 
+# Copy and override src folder
+COPY ./src .

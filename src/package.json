@@ -6,6 +6,7 @@
   "scripts": {
       "start": "node app",
       "dev": "HOST=0.0.0.0 node app",
+      "env": "rm -r node_modules",
       "test": "jest --passWithNoTests"
   },
   "repository": {
