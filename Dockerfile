@@ -1,8 +1,12 @@
-FROM node:latest
+FROM alpine:latest
 MAINTAINER albamr09
 
+# Install dependencies
+RUN apk add --no-cache nodejs npm
+
 # Add common user
-RUN useradd --create-home --shell /bin/bash user
+RUN adduser -D user
+#RUN useradd --create-home --shell /bin/bash user
 
 # Create app directory
 WORKDIR /home/user/src/
@@ -22,6 +26,6 @@ RUN npm install
 COPY ./src .
 
 ##container exposed network port number
-#EXPOSE 7500
+EXPOSE ${PORT}
 ##command to run within the container
 #CMD ['node', 'app.js']
