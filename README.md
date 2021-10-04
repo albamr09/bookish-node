@@ -116,6 +116,25 @@ services:
       - .env
 ```
 
+Now we build the image with:
+
+```console
+$ docker-compose build --no-cache
+```
+
+And we start the application with:
+
+```console
+$ docker-compose run app sh -c "npm start"
+```
+
+Or start the development server with:
+
+
+```console
+$ docker-compose up
+```
+
 ### Create database
 
 ### Configure `.env`
