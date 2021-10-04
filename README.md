@@ -197,6 +197,6 @@ script:
   - docker-compose run app sh -c "npm test"
 ```
 
-Set in the `Travis CI` client the `HOST` and `PORT` environment variables.
+Set in the `Travis CI` client the `HOST` and `PORT` environment variables and all the rest.
 An in our `Repositories` section on [Travis CI](https://www.travis-ci.com), your activate your repository.
 
