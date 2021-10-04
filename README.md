@@ -36,10 +36,10 @@ $ npm install --save-dev dotenv nodemon supertest jest
 We modify the `scripts` object of `package.json`:
 
 ```json
-scripts: {
-    start: "node index"
-    dev: "nodemon index"
-    test: "jest"
+"scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "test": "jest"
 }
 ```
 

@@ -2,9 +2,11 @@
   "name": "bookish-node",
   "version": "1.0.0",
   "description": "## Set Up",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "node app",
+      "dev": "nodemon app",
+      "test": "jest"
   },
   "repository": {
     "type": "git",
