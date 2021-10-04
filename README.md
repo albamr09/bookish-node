@@ -112,8 +112,9 @@ services:
       - /home/user/src/node_modules
     command: >
       sh -c "npm run dev"
-    env_file:
-      - .env
+    environment:
+      - HOST:${HOST}
+      - PORT:${PORT}
 ```
 
 Now we build the image with:
