@@ -60,5 +60,15 @@ node_modules/
 
 ### Configure Travis CI
 
+We create the `Travis CI` configuration file `.travis.yml`:
 
+```conf
+language: node_js
+node_js:
+ - 'stable' 
+install: npm install
+script: npm test
+```
+
+An in our `Repositories` section on [Travis CI](https://www.travis-ci.com), your activate your repository.
 
