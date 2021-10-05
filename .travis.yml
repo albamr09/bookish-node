@@ -7,10 +7,11 @@ services:
 
 env:
   - PORT=8000
-  - HOST=0.0.0.0
+  - HOST="0.0.0.0"
   - DB_NAME=dummy_db
   - DB_PASS=dummy_pass
   - DB_USER=dummy_user
+  - DB_PORT=27017
 
 script:
   - docker-compose run app sh -c "npm test"
