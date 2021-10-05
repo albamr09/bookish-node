@@ -1,3 +1,4 @@
 .env
 src/node_modules/
+*/mongo-volume
 *-passwd
