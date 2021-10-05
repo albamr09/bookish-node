@@ -316,17 +316,10 @@ node_js:
 services:
   - docker
 
-env:
-
-
 script:
   - ./test.sh 
 ```
 
-We specify that we use `docker` and then we run our `test.sh` script. 
-
-Note that it is needed to specify the environment variables 
-
-Set in the `Travis CI` client the `HOST` and `PORT` environment variables and all the rest.
 An in our `Repositories` section on [Travis CI](https://www.travis-ci.com), your activate your repository.
 
+We specify that we use `docker` and then we run our `test.sh` script. Note that it is needed to specify the environment variables for our build on the `Travis CI` client (only `PORT` and `DB_PORT` are needed).
