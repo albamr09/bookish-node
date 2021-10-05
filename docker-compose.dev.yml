@@ -1,12 +1,5 @@
 version: "3"
 
-# Secrets for production version (look into using external)
-secrets:
-  MONGO_ROOT_PASSWORD:
-    file: mongo-root-passwd
-  MONGO_USER_PASSWORD:
-    file: mongo-user-passwd
-
 services:
   # Development service
   app:
@@ -20,7 +13,6 @@ services:
       - /home/user/src/node_modules
     command: >
       sh -c "npm run dev"
-    #TODO: use external secrets
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
@@ -32,15 +24,14 @@ services:
     depends_on:
       - db
 
-  # Production based database
   db:
     image: mongo
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USER}
-      - MONGO_INITDB_ROOT_PASSWORD_FILE=/var/run/secrets/MONGO_ROOT_PASSWORD
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MONGO_INITDB_USERNAME=${DB_USER}
-      - MONGO_INITDB_PASSWORD_FILE=/var/run/secrets/MONGO_USER_PASSWORD
+      - MONGO_INITDB_PASSWORD=${DB_PASSWORD}
       - MONGO_INITDB_DATABASE=${DB_NAME}
     ports:
       - '${DB_PORT}:27017'
@@ -49,12 +40,8 @@ services:
       # Make data persist on local folder named ./mongo-volume
       - ${DB_DATA}:/data/db
       # Copy the database initialization script
-      - ./.docker/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh 
+      - ${DB_INIT}:/docker-entrypoint-initdb.d/init-mongo.sh 
         # Map mongo config file to /etc/mongo
       - ${DB_CONFIG}:/etc/mongo/
     # Specify config file
     command: ["-f", "/etc/mongo/mongod.conf"]
-    # Credentials stored as secrets
-    secrets:
-      - MONGO_ROOT_PASSWORD
-      - MONGO_USER_PASSWORD
