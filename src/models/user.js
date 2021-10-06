@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 //https://www.geeksforgeeks.org/nodejs-authentication-using-passportjs-and-passport-local-mongoose/
 
 // Create a simple User's schema 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     name: String,
     username: {
         type: String,
