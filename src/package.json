@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app",
     "dev": "node app",
-    "test": "jest --passWithNoTests --watchAll --no-cache"
+    "test": "jest --passWithNoTests --no-cache"
   },
   "repository": {
     "type": "git",
