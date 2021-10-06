@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app",
-    "dev": "node app",
+    "localTest": "jest --passWithNoTests --watchAll --no-cache",
     "test": "jest --passWithNoTests --no-cache"
   },
   "repository": {

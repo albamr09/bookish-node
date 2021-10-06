@@ -6,4 +6,5 @@ services:
   - docker
 
 script:
-  - bash test.sh
+  - docker-compose -f docker-compose.dev.yml run app sh -c "npm test"
+
