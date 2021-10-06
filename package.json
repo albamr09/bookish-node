@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "mongodb-memory-server-globa": "file:shelf/jest-mongodb@2.0.3",
+    "mongodb-memory-server-global": "^7.4.3"
+  }
+}

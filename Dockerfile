@@ -4,6 +4,16 @@ MAINTAINER albamr09
 # Install dependencies
 RUN apk add --no-cache nodejs npm
 
+# Install mongodb
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/community' >> /etc/apk/repositories
+RUN apk update
+RUN apk add mongodb
+RUN apk add mongodb-tools
+RUN mkdir -p /data/db/
+RUN chmod -R 777 /data/db
+
+
 # Add common user
 RUN adduser -D user
 #RUN useradd --create-home --shell /bin/bash user
@@ -24,8 +34,3 @@ RUN npm install
 
 # Copy and override src folder
 COPY ./src .
-
-# Container exposed network port number
-EXPOSE ${PORT}
-##command to run within the container
-#CMD ['node', 'app.js']

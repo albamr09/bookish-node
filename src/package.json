@@ -4,9 +4,9 @@
   "description": "## Set Up",
   "main": "app.js",
   "scripts": {
-      "start": "node app",
-      "dev": "node app",
-      "test": "jest --passWithNoTests"
+    "start": "node app",
+    "dev": "node app",
+    "test": "jest --passWithNoTests --watchAll --no-cache"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,19 @@
   },
   "devDependencies": {
     "jest": "^27.2.4",
+    "mongodb-memory-server-core": "^7.4.3",
     "supertest": "^6.1.6"
+  },
+  "jest":{
+      "verbose": true,
+      "name": "bookish",
+      "testEnvironment": "node",
+      "setupFilesAfterEnv": [ "./tests/setup.js"]
+  },
+  "config":{
+    "mongodbMemoryServer":{
+        "systemBinary": "/usr/bin/mongod",
+        "version": "3.4.4"
+    }
   }
 }
