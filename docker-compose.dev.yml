@@ -5,7 +5,7 @@ services:
   app:
     container_name: 'bookish_node'
     build:
-      context: .
+      context: ./src/
     ports:
       - "${PORT}:${PORT}"
     volumes:

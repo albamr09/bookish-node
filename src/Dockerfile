@@ -27,10 +27,10 @@ RUN chmod -R 755 /home/user/src/
 USER user 
 
 # Copy with user as owner
-COPY --chown=user:user ./src/package*.json ./
+COPY --chown=user:user ./package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Copy and override src folder
-COPY ./src .
+COPY . .
