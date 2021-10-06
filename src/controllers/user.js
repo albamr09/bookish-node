@@ -1,6 +1,7 @@
 const UserModel = require('../models/user');
 
 const createUser = (req, res) => {
+    res.send("Hello")
 }
 
 const updateUser = (req, res) => {
@@ -14,7 +15,7 @@ const findByIdUser = (req, res) => {
 const deleteUser = (req, res) => {
 }
 
-modules.exports = {
+module.exports = {
     createUser, 
     updateUser, 
     findByIdUser, 

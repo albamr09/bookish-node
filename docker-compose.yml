@@ -3,9 +3,9 @@ version: "3"
 # Secrets for production version (look into using external)
 secrets:
   MONGO_ROOT_PASSWORD:
-    file: mongo-root-passwd
+    file: .secrets/mongo-root-passwd
   MONGO_USER_PASSWORD:
-    file: mongo-user-passwd
+    file: .secrets/mongo-user-passwd
 
 services:
   # Development service
@@ -19,7 +19,7 @@ services:
       - ./src/:/home/user/src/
       - /home/user/src/node_modules
     command: >
-      sh -c "npm run dev"
+      sh -c "npm start"
     #TODO: use external secrets
     environment:
       - HOST=${HOST}
