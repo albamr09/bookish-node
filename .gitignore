@@ -2,4 +2,4 @@
 src/node_modules/
 .secrets/*
 scripts/*
-.docker/*
+.docker/mongo-volume/
