@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
-//const BookModel = require('../models/book');
-//const BookController = require('../controllers/book');
+// const mongoose = require('mongoose')
+// const BookModel = require('../models/book');
+// const BookController = require('../controllers/book');
 
-describe('Unauthenticated Book Api Test', ()=> {
-    it('Dummy', ()=> expect(1).toBe(1))
-})
+// describe('Unauthenticated Book Api Test', () => {
+//   it('Dummy', () => expect(1).toBe(1))
+// })
 
-//describe('Authenticated Book Model Test', () => {
+// describe('Authenticated Book Model Test', () => {
 //
 //    it('Create and save Book successfully', async() => {
 //    })
@@ -23,4 +23,4 @@ describe('Unauthenticated Book Api Test', ()=> {
 //    })
 //    it('Delete all Books from the database', async() => {
 //    })
-//})
+// })

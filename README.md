@@ -10,6 +10,7 @@
 
 - supertest
 - jest
+- eslint
 
 ## Set Up
 
@@ -32,8 +33,18 @@ $ npm install express mongoose jsonwebtoken
 ```
 
 ```console 
-$ npm install --save-dev supertest jest
+$ npm install --save-dev supertest jest eslint
 ```
+
+### Configure `eslint`
+
+In order to do that we execute from our project's root folder:
+
+```console
+$ ./node_modules/.bin/eslint --init
+```
+
+And we setup our linter to our needs.
 
 ### Configure `package.json`
 

@@ -3,7 +3,7 @@ version: "3"
 services:
   # Development service
   app:
-    container_name: 'bookish_node'
+    container_name: 'bookish_node_dev'
     build:
       context: ./src/
     ports:
@@ -25,7 +25,9 @@ services:
       - db
 
   db:
-    image: mongo
+    container_name: "mongodb"
+    image: mongo:latest
+    hostname: mongodb
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USER}
@@ -35,13 +37,12 @@ services:
       - MONGO_INITDB_DATABASE=${DB_NAME}
     ports:
       - '${DB_PORT}:27017'
-
     volumes:
+      # Map mongo config file to /etc/mongo
+      - ${DB_CONFIG}:/etc/mongo/
+      # Copy the database initialization script
+      - ${DB_INIT}:/docker-entrypoint-initdb.d/
       # Make data persist on local folder named ./mongo-volume
       - ${DB_DATA}:/data/db
-      # Copy the database initialization script
-      - ${DB_INIT}:/docker-entrypoint-initdb.d/init-mongo.sh 
-        # Map mongo config file to /etc/mongo
-      - ${DB_CONFIG}:/etc/mongo/
     # Specify config file
     command: ["-f", "/etc/mongo/mongod.conf"]

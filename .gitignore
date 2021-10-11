@@ -1,5 +1,5 @@
-.env
+.config/*
 src/node_modules/
-*/mongo-volume
 .secrets/*
-test.sh
+scripts/*
+.docker/*

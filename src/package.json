@@ -4,9 +4,10 @@
   "description": "## Set Up",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
-    "dev": "nodemon app",
-    "localTest": "jest --passWithNoTests --watchAll --no-cache",
+    "start": "node server",
+    "dev": "nodemon server",
+    "lint": "./node_modules/.bin/eslint .",
+    "localTest": "jest --passWithNoTests --watchAll --no-cache --detectOpenHandles",
     "test": "jest --passWithNoTests --no-cache"
   },
   "repository": {
@@ -26,23 +27,18 @@
     "mongoose": "^6.0.8"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.2.4",
-    "mongodb-memory-server-core": "^7.4.3",
     "nodemon": "^2.0.13",
     "supertest": "^6.1.6"
   },
   "jest": {
     "verbose": true,
     "name": "bookish",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
-    ]
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "systemBinary": "/usr/bin/mongod",
-      "version": "3.4.4"
-    }
+    "testEnvironment": "node"
   }
 }
