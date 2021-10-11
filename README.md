@@ -1,4 +1,4 @@
-# bookish-node
+# bookish-node [![Build Status](https://app.travis-ci.com/albamr09/bookish-node.svg?branch=main)](https://app.travis-ci.com/albamr09/bookish-node) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Dependencies
 
