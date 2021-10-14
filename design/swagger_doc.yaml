@@ -1,0 +1,492 @@
+---
+swagger: "2.0"
+info:
+  description: This is a simple book API
+  version: 1.0.0
+  title: Bookish API
+  contact:
+    email: alba.martinez.rodriguez@protonmail.com
+  license:
+    name: MIT
+    url: https://mit-license.org/
+tags:
+- name: users
+  description: Operations available to users
+paths:
+  /status:
+    get:
+      tags:
+      - users
+      summary: Returns the status of the API.
+      description: |
+        You get the status of the `API`.
+      operationId: getStatus
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: The `API`'s status was retrieved successfully.
+          schema:
+            type: string
+  /books:
+    get:
+      tags:
+      - users
+      summary: Returns a list of books.
+      description: |
+        You get the list of `Books` that match the query.
+      operationId: getBooks
+      produces:
+      - application/json
+      parameters:
+      - name: limit
+        in: query
+        description: The number of `Books` to show.
+        required: false
+        type: integer
+      - name: title
+        in: query
+        description: The title of the `Book`.
+        required: false
+        type: string
+      - name: author
+        in: query
+        description: The name of the author of the `Book`.
+        required: false
+        type: string
+      - name: publisher
+        in: query
+        description: The name of the publisher of the `Book`.
+        required: false
+        type: string
+      - name: language
+        in: query
+        description: The language in which the `Book` is written.
+        required: false
+        type: string
+      - name: genre
+        in: query
+        description: The main theme of the `Book`.
+        required: false
+        type: string
+      responses:
+        "200":
+          description: The list was retrieved successfully.
+          schema:
+            required:
+            - books
+            - success
+            properties:
+              books:
+                type: array
+                items:
+                  $ref: '#/definitions/BasicBook'
+              success:
+                type: boolean
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+        "404":
+          description: The specified resource was not found
+      security:
+      - apikey: []
+    post:
+      tags:
+      - users
+      summary: Creates a new Book.
+      description: |
+        A new `Book` is stored in the database with the data provided.
+      operationId: createBook
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: book
+        description: New `Book` data.
+        required: true
+        schema:
+          $ref: '#/definitions/BookProperties'
+      responses:
+        "200":
+          description: Book updated successfully.
+          schema:
+            $ref: '#/definitions/SuccessBook'
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+      security:
+      - apikey: []
+  /books/{id}:
+    get:
+      tags:
+      - users
+      summary: Returns information about a book.
+      description: |
+        You get detailed information about the `Book` with the specified id, if it exists.
+      operationId: getBookById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Book ID
+        required: true
+        type: string
+      responses:
+        "200":
+          description: get the book
+          schema:
+            $ref: '#/definitions/SuccessBook'
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+        "404":
+          description: The specified resource was not found
+      security:
+      - apikey: []
+    put:
+      tags:
+      - users
+      summary: Updates information about a Book.
+      description: |
+        All of the information about the `Book` is replaced by the data provided.
+      operationId: updateBook
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of Book to update.
+        required: true
+        type: string
+      - in: body
+        name: book
+        description: New `Book` data.
+        required: true
+        schema:
+          $ref: '#/definitions/BookProperties'
+      responses:
+        "200":
+          description: Book updated successfully.
+          schema:
+            $ref: '#/definitions/SuccessBook'
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+        "404":
+          description: The specified resource was not found
+      security:
+      - apikey: []
+    delete:
+      tags:
+      - users
+      summary: Deletes the book with the specified id.
+      description: |
+        The `Book` identified, if it exists, is removed.
+      operationId: deleteBook
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of Book to delete.
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Book deleted successfully.
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+        "404":
+          description: The specified resource was not found
+      security:
+      - apikey: []
+    patch:
+      tags:
+      - users
+      summary: Updates specific information about a Book.
+      description: |
+        Some of the information about the `Book` is replaced by the data provided.
+      operationId: patchBook
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of Book to update.
+        required: true
+        type: string
+      - in: body
+        name: book
+        description: New `Book` data.
+        required: true
+        schema:
+          $ref: '#/definitions/BookProperties'
+      responses:
+        "200":
+          description: Book updated successfully.
+          schema:
+            $ref: '#/definitions/SuccessBook'
+        "400":
+          description: The request is not correct
+        "401":
+          description: Unauthorized
+        "404":
+          description: The specified resource was not found
+      security:
+      - apikey: []
+  /users/login:
+    post:
+      tags:
+      - users
+      summary: Logs the user in.
+      description: |
+        The user is logged in with its credentials.
+      operationId: logUser
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: User credentials.
+        required: true
+        schema:
+          $ref: '#/definitions/LogUser'
+      responses:
+        "200":
+          description: User logged successfully.
+          schema:
+            type: object
+            properties:
+              User:
+                $ref: '#/definitions/User'
+        "400":
+          description: The request is not correct
+  /users/signup:
+    post:
+      tags:
+      - users
+      summary: Logs the user in.
+      description: |
+        A new `User` is created with the data provided.
+      operationId: createUser
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: User credentials.
+        required: true
+        schema:
+          $ref: '#/definitions/NewUser'
+      responses:
+        "200":
+          description: User logged successfully.
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: The request is not correct
+securityDefinitions:
+  apikey:
+    type: apiKey
+    name: server_token
+    in: query
+definitions:
+  BasicUser:
+    type: object
+    required:
+    - email
+    properties:
+      email:
+        type: string
+        format: email
+        example: marco@email.com
+  LogUser:
+    properties:
+      password:
+        type: string
+        format: password
+        example: pass123
+    required:
+    - password
+    allOf:
+    - $ref: '#/definitions/BasicUser'
+    - type: object
+  NewUser:
+    properties:
+      name:
+        type: string
+        example: Marco
+    allOf:
+    - $ref: '#/definitions/LogUser'
+    - type: object
+  User:
+    properties:
+      id:
+        type: string
+        format: objectid
+        example: 507f1f77bcf86cd799439011
+      name:
+        type: string
+        example: Marco
+    required:
+    - id
+    allOf:
+    - $ref: '#/definitions/BasicUser'
+    - type: object
+  BookProperties:
+    type: object
+    required:
+    - isbn
+    - title
+    properties:
+      isbn:
+        type: string
+        example: 978-3-16-148410-0
+      title:
+        type: string
+        example: City of Nebula
+      edition:
+        type: integer
+        example: 1
+      year_published:
+        type: string
+        example: "1984"
+        pattern: ^\d{4}$
+      author:
+        $ref: '#/definitions/Author'
+      publisher:
+        type: string
+        example: Penguin Random House
+      language:
+        $ref: '#/definitions/Language'
+      genre:
+        $ref: '#/definitions/Genre'
+  BasicBook:
+    type: object
+    required:
+    - isbn
+    - title
+    properties:
+      isbn:
+        type: string
+        example: 978-3-16-148410-0
+      title:
+        type: string
+        example: City of Nebula
+      author:
+        $ref: '#/definitions/Author'
+  Book:
+    properties:
+      id:
+        type: string
+        format: objectid
+        example: 507f1f77bcf86cd799439011
+    required:
+    - id
+    allOf:
+    - $ref: '#/definitions/BookProperties'
+    - type: object
+  SuccessBook:
+    required:
+    - book
+    - success
+    properties:
+      book:
+        $ref: '#/definitions/Book'
+      success:
+        type: boolean
+  Author:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: objectid
+        example: 507f1f77bcf86cd799439011
+      name:
+        type: string
+        example: Isaac Asimov
+      birth_date:
+        type: string
+        format: date
+        example: 2017-07-21
+  Genre:
+    type: string
+    enum:
+    - fantasy
+    - science fiction
+    - dystopian
+    - adventure
+    - romance
+    - detective_mystery
+    - horror
+    - thriller
+    - LGBTQ
+    - historical fiction
+    - young adult
+    - childrens fiction
+    - biography
+    - autobiography
+    - cooking
+    - art_photography
+    - self_help
+    - motivational
+    - healh
+    - history
+    - humor
+    - law
+    - bussiness
+    - politics
+    - religion
+    - education
+  Language:
+    type: string
+    enum:
+    - chinese
+    - spanish
+    - english
+    - hindi
+    - arabic
+    - portuguese
+    - bengali
+    - russian
+    - japanese
+    - french
+    - german
+  Error:
+    type: object
+    required:
+    - code
+    - success
+    properties:
+      success:
+        type: boolean
+        example: false
+      code:
+        $ref: '#/definitions/Code'
+      message:
+        type: string
+  Code:
+    type: string
+    enum:
+    - "001"
+    - "002"
+    - "003"
+    
+responses:
+  BadRequest:
+    description: The request is not correct
+  NotFound:
+    description: The specified resource was not found
+  Unauthorized:
+    description: Unauthorized

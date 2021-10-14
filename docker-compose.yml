@@ -58,3 +58,14 @@ services:
     secrets:
       - MONGO_ROOT_PASSWORD
       - MONGO_USER_PASSWORD
+
+  # Api doc
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+      - "80:8080"
+    volumes:
+      - ./design:/usr/share/nginx/html/doc
+    environment:
+      API_URL: doc/openapi_doc.yaml
