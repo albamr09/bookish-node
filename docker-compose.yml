@@ -14,7 +14,7 @@ services:
     build:
       context: ./src/
     ports:
-      - "${PORT}:${PORT}"
+      - "${PORT}:8000"
     volumes:
       - ./src/:/home/user/src/
       - /home/user/src/node_modules
@@ -62,10 +62,10 @@ services:
   # Api doc
   swagger-ui:
     image: swaggerapi/swagger-ui
-    container_name: swagger_ui_container
+    container_name: swagger_ui
     ports:
-      - "80:8080"
+      - "${SWAGGER_PORT}:8080"
     volumes:
-      - ./design:/usr/share/nginx/html/doc
+      - ${SWAGGER_DIR}:/usr/share/nginx/html/doc
     environment:
-      API_URL: doc/openapi_doc.yaml
+      API_URL: ${SWAGGER_API_URL}

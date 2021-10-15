@@ -423,32 +423,15 @@ definitions:
   Genre:
     type: string
     enum:
-    - fantasy
-    - science fiction
-    - dystopian
-    - adventure
-    - romance
-    - detective_mystery
-    - horror
-    - thriller
-    - LGBTQ
-    - historical fiction
-    - young adult
-    - childrens fiction
-    - biography
-    - autobiography
-    - cooking
-    - art_photography
-    - self_help
-    - motivational
-    - healh
-    - history
-    - humor
-    - law
-    - bussiness
-    - politics
-    - religion
-    - education
+      - fantasy
+      - science_fiction
+      - adventure
+      - romance
+      - horror
+      - thriller
+      - LGTBQ
+      - mistery
+      - science
   Language:
     type: string
     enum:
