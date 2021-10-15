@@ -55,9 +55,9 @@ $ docker-compose -f ../docker-compose.dev.yml up
 
 ## Project Set Up
 
-[Set Up](docs/SetUp.md)
+[Set Up](docs/setup.md)
 
 ## Configuration Specification
 
-[Configuration](docs/Config.md)
+[Configuration](docs/config.md)
 
