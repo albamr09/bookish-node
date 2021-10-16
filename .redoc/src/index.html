@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <title>Book API Documentation</title>
+</head>
+<body>
+    <div id="redoc"></div>
+    <script src="./js/redoc.standalone.js"> </script>
+    <script>
+      Redoc.init(
+        "https://raw.githubusercontent.com/albamr09/bookish-node/main/.swagger/openapi_doc.yaml",
+        {
+          scrollYOffset: 80,
+          nativeScrollbars: true,
+          hideDownloadButton: false,
+        },
+        document.getElementById("redoc")   
+      )  
+    </script>
+</body>
+</html>

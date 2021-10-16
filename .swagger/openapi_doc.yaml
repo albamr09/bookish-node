@@ -2,7 +2,9 @@
 openapi: 3.0.0
 info:
   title: Bookish API
-  description: This is a simple book API
+  description: >
+    # Introduction
+    This is a simple book API
   contact:
     email: alba.martinez.rodriguez@protonmail.com
   license:
@@ -15,13 +17,13 @@ servers:
 - url: https://sandbox-api.example.com:8443/v1
   description: Sandbox server (uses test data)
 tags:
-- name: users
+- name: Users
   description: Operations available to users
 paths:
   /status:
     get:
       tags:
-      - users
+      - Users
       summary: Returns the status of the API.
       description: |
         You get the status of the `API`.
@@ -36,7 +38,7 @@ paths:
   /books:
     get:
       tags:
-      - users
+      - Users
       summary: Returns a list of books.
       description: |
         You get the list of `Books` that match the query.
@@ -132,7 +134,7 @@ paths:
       - Bearer: []
     post:
       tags:
-      - users
+      - Users
       summary: Creates a new Book.
       description: |
         A new `Book` is stored in the database with the data provided.
@@ -168,7 +170,7 @@ paths:
   /books/{id}:
     get:
       tags:
-      - users
+      - Users
       summary: Returns information about a book.
       description: |
         You get detailed information about the `Book` with the specified id, if it exists.
@@ -213,7 +215,7 @@ paths:
       - Bearer: []
     put:
       tags:
-      - users
+      - Users
       summary: Updates information about a Book.
       description: |
         All of the information about the `Book` is replaced by the data provided.
@@ -265,7 +267,7 @@ paths:
       - Bearer: []
     delete:
       tags:
-      - users
+      - Users
       summary: Deletes the book with the specified id.
       description: |
         The `Book` identified, if it exists, is removed.
@@ -306,7 +308,7 @@ paths:
       - Bearer: []
     patch:
       tags:
-      - users
+      - Users
       summary: Updates specific information about a Book.
       description: |
         Some of the information about the `Book` is replaced by the data provided.
@@ -359,7 +361,7 @@ paths:
   /users/login:
     post:
       tags:
-      - users
+      - Users
       summary: Logs the user in.
       description: |
         The user is logged in with its credentials.
@@ -396,7 +398,7 @@ paths:
   /users/signup:
     post:
       tags:
-      - users
+      - Users
       summary: Logs the user in.
       description: |
         A new `User` is created with the data provided.

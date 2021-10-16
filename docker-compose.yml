@@ -69,3 +69,12 @@ services:
       - ${SWAGGER_DIR}:/usr/share/nginx/html/doc
     environment:
       API_URL: ${SWAGGER_API_URL}
+
+  redoc:
+    image: nginx
+    container_name: 'api_redoc'
+    ports:
+      - "${REDOC_PORT}:80"
+    volumes:
+      - ${REDOC_SRC}:/usr/share/nginx/html
+      - ${REDOC_CONF}:/etc/nginx/nginx.conf

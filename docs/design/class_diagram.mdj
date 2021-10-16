@@ -1787,9 +1787,9 @@
 										"$ref": "AAAAAAF8hIjQo4U/uU0="
 									},
 									"font": "Roboto;13;0",
-									"left": 728,
+									"left": 721,
 									"top": 448,
-									"width": 39.95849609375,
+									"width": 52.8251953125,
 									"height": 13,
 									"alpha": -4.682094973196362,
 									"distance": 33.015148038438355,
@@ -1797,7 +1797,7 @@
 										"$ref": "AAAAAAF8hIjQo4VDrQQ="
 									},
 									"edgePosition": 1,
-									"text": "+wrote"
+									"text": "+wrote▲"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -2264,7 +2264,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF8hFp6XGJlqZc="
 							},
-							"name": "wrote",
+							"name": "wrote▲",
 							"documentation": "Relation between the authors and the books they wrote.",
 							"end1": {
 								"_type": "UMLAssociationEnd",

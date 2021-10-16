@@ -50,10 +50,19 @@ services:
   # Api doc
   swagger-ui:
     image: swaggerapi/swagger-ui
-    container_name: swagger_ui
+    container_name: 'api_swagger'
     ports:
       - "${SWAGGER_PORT}:8080"
     volumes:
       - ${SWAGGER_DIR}:/usr/share/nginx/html/doc
     environment:
       API_URL: ${SWAGGER_API_URL}
+
+  redoc:
+    image: nginx
+    container_name: 'api_redoc'
+    ports:
+      - "${REDOC_PORT}:80"
+    volumes:
+      - ${REDOC_SRC}:/usr/share/nginx/html
+      - ${REDOC_CONF}:/etc/nginx/nginx.conf
