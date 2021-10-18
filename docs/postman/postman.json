@@ -1,0 +1,754 @@
+{
+  "info": {
+    "name": "Bookish API",
+    "_postman_id": "d4ae78ea-a9f1-4722-ae00-3bf2a492a1d7",
+    "description": "# Introduction This is a simple book API\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "description": "Operations available to users",
+      "item": [
+        {
+          "id": "f59479e9-9d55-4f58-bf88-1f894e547196",
+          "name": "getStatus",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "status"
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": "You get the status of the `API`.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "response 2000",
+              "status": "The `API`'s status was retrieved successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "9adb51e4-617b-489a-b376-6f201fe36aa3"
+            }
+          ]
+        },
+        {
+          "id": "3a8a043e-e4af-4d88-a0ec-9e2342f512e5",
+          "name": "getBooks",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "description": "The number of `Books` to show.",
+                  "disabled": false
+                },
+                {
+                  "key": "title",
+                  "value": "City%20of%20Nebula",
+                  "description": "The title of the `Book`.",
+                  "disabled": false
+                },
+                {
+                  "key": "author",
+                  "value": "Isaac%20Asimov",
+                  "description": "The name of the author of the `Book`.",
+                  "disabled": false
+                },
+                {
+                  "key": "publisher",
+                  "value": "Penguin%20Random%20House",
+                  "description": "The name of the publisher of the `Book`.",
+                  "disabled": false
+                },
+                {
+                  "key": "language",
+                  "value": "japanese",
+                  "description": "The language in which the `Book` is written.",
+                  "disabled": false
+                },
+                {
+                  "key": "genre",
+                  "value": "LGTBQ",
+                  "description": "The main theme of the `Book`.",
+                  "disabled": false
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": "You get the list of `Books` that match the query.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"books\": [\r\n    {\r\n      \"isbn\": \"978-3-16-148410-0\",\r\n      \"title\": \"City of Nebula\",\r\n      \"author\": {\r\n        \"id\": \"507f1f77bcf86cd799439011\",\r\n        \"name\": \"Isaac Asimov\",\r\n        \"birth_date\": \"2017-07-21\"\r\n      }\r\n    }\r\n  ],\r\n  \"success\": true\r\n}",
+              "status": "The list was retrieved successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "03b64aac-16bf-4ff5-9ef0-a9413c1c95a3"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "0c914540-2ba7-45df-b734-7e106ec2dc19"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "9fcad500-df45-4f4c-8830-b7afc08e06eb"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The specified resource was not found",
+              "code": 404,
+              "name": "Response_404",
+              "id": "63fdc42e-1ff7-4251-bbfb-12ce1499b94c"
+            }
+          ]
+        },
+        {
+          "id": "0023f650-cc8c-4d3f-aae9-c15c569d917e",
+          "name": "createBook",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books"
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"isbn\": \"978-3-16-148410-0\",\r\n  \"title\": \"City of Nebula\",\r\n  \"edition\": 1,\r\n  \"year_published\": \"1984\",\r\n  \"author\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"name\": \"Isaac Asimov\",\r\n    \"birth_date\": \"2017-07-21\"\r\n  },\r\n  \"publisher\": \"Penguin Random House\",\r\n  \"language\": \"bengali\",\r\n  \"genre\": \"thriller\"\r\n}",
+              "disabled": false
+            },
+            "description": "A new `Book` is stored in the database with the data provided.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"book\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"isbn\": \"978-3-16-148410-0\",\r\n    \"title\": \"City of Nebula\",\r\n    \"edition\": 1,\r\n    \"year_published\": \"1984\",\r\n    \"author\": {\r\n      \"id\": \"507f1f77bcf86cd799439011\",\r\n      \"name\": \"Isaac Asimov\",\r\n      \"birth_date\": \"2017-07-21\"\r\n    },\r\n    \"publisher\": \"Penguin Random House\",\r\n    \"language\": \"bengali\",\r\n    \"genre\": \"thriller\"\r\n  },\r\n  \"success\": true\r\n}",
+              "status": "Book updated successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "9bffe05c-be2d-4ce6-a0aa-83b85d72d98a"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "e4770574-31ad-4faa-9afb-158043097bd4"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "0e771aa6-fd1f-4884-a28c-30dc9dd90d41"
+            }
+          ]
+        },
+        {
+          "id": "909e0a61-4743-415c-9e78-ab3cfa194c10",
+          "name": "getBookById",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books/:id"
+              ],
+              "variable": [
+                {
+                  "id": "id",
+                  "value": "507f1f77bcf86cd799439011",
+                  "type": "string",
+                  "description": "Book ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": "You get detailed information about the `Book` with the specified id, if it exists.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"book\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"isbn\": \"978-3-16-148410-0\",\r\n    \"title\": \"City of Nebula\",\r\n    \"edition\": 1,\r\n    \"year_published\": \"1984\",\r\n    \"author\": {\r\n      \"id\": \"507f1f77bcf86cd799439011\",\r\n      \"name\": \"Isaac Asimov\",\r\n      \"birth_date\": \"2017-07-21\"\r\n    },\r\n    \"publisher\": \"Penguin Random House\",\r\n    \"language\": \"bengali\",\r\n    \"genre\": \"thriller\"\r\n  },\r\n  \"success\": true\r\n}",
+              "status": "get the book",
+              "code": 200,
+              "name": "Response_200",
+              "id": "54170f0b-f669-4d71-b8e6-7760a2039600"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "aa4b8f8e-4240-4b2b-9b50-74b1b9a4f137"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "01272a23-4094-4a34-89f9-491f51ed4135"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The specified resource was not found",
+              "code": 404,
+              "name": "Response_404",
+              "id": "2fb6f1eb-279b-4790-ada6-785fde0dd2a7"
+            }
+          ]
+        },
+        {
+          "id": "3bdf00cb-1773-41ce-ae23-3c0916e42e7a",
+          "name": "updateBook",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books/:id"
+              ],
+              "variable": [
+                {
+                  "id": "id",
+                  "value": "507f1f77bcf86cd799439011",
+                  "type": "string",
+                  "description": "ID of Book to update."
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"isbn\": \"978-3-16-148410-0\",\r\n  \"title\": \"City of Nebula\",\r\n  \"edition\": 1,\r\n  \"year_published\": \"1984\",\r\n  \"author\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"name\": \"Isaac Asimov\",\r\n    \"birth_date\": \"2017-07-21\"\r\n  },\r\n  \"publisher\": \"Penguin Random House\",\r\n  \"language\": \"bengali\",\r\n  \"genre\": \"thriller\"\r\n}",
+              "disabled": false
+            },
+            "description": "All of the information about the `Book` is replaced by the data provided.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"book\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"isbn\": \"978-3-16-148410-0\",\r\n    \"title\": \"City of Nebula\",\r\n    \"edition\": 1,\r\n    \"year_published\": \"1984\",\r\n    \"author\": {\r\n      \"id\": \"507f1f77bcf86cd799439011\",\r\n      \"name\": \"Isaac Asimov\",\r\n      \"birth_date\": \"2017-07-21\"\r\n    },\r\n    \"publisher\": \"Penguin Random House\",\r\n    \"language\": \"bengali\",\r\n    \"genre\": \"thriller\"\r\n  },\r\n  \"success\": true\r\n}",
+              "status": "Book updated successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "f193f6bf-98d5-4419-b1da-5aff69c67da0"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "9c8c8e1e-d86e-485e-a457-5ee6a411b704"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "f09e621c-8276-486b-8b23-8b69219c069e"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The specified resource was not found",
+              "code": 404,
+              "name": "Response_404",
+              "id": "510d98f0-f59c-4420-9aa4-f14dd10f0963"
+            }
+          ]
+        },
+        {
+          "id": "f823eb67-c1dd-46ab-a780-bd21c9d168b0",
+          "name": "deleteBook",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books/:id"
+              ],
+              "variable": [
+                {
+                  "id": "id",
+                  "value": "507f1f77bcf86cd799439011",
+                  "type": "string",
+                  "description": "ID of Book to delete."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": "The `Book` identified, if it exists, is removed.\n"
+          },
+          "response": [
+            {
+              "header": [],
+              "status": "Book deleted successfully.",
+              "code": 204,
+              "name": "Response_204",
+              "id": "c1c5c19c-5115-40d0-b17c-f995e2d5386e"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "3652c2fc-4370-4667-b206-05c88e8392fb"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "4311d514-e9ce-4086-b703-f59d04169507"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The specified resource was not found",
+              "code": 404,
+              "name": "Response_404",
+              "id": "b56a341c-c623-4ace-bdc0-c5c9c8d96f81"
+            }
+          ]
+        },
+        {
+          "id": "c2b9009e-f794-4084-abe0-3d9a9de15616",
+          "name": "patchBook",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "books/:id"
+              ],
+              "variable": [
+                {
+                  "id": "id",
+                  "value": "507f1f77bcf86cd799439011",
+                  "type": "string",
+                  "description": "ID of Book to update."
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"isbn\": \"978-3-16-148410-0\",\r\n  \"title\": \"City of Nebula\",\r\n  \"edition\": 1,\r\n  \"year_published\": \"1984\",\r\n  \"author\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"name\": \"Isaac Asimov\",\r\n    \"birth_date\": \"2017-07-21\"\r\n  },\r\n  \"publisher\": \"Penguin Random House\",\r\n  \"language\": \"bengali\",\r\n  \"genre\": \"thriller\"\r\n}",
+              "disabled": false
+            },
+            "description": "Some of the information about the `Book` is replaced by the data provided.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"book\": {\r\n    \"id\": \"507f1f77bcf86cd799439011\",\r\n    \"isbn\": \"978-3-16-148410-0\",\r\n    \"title\": \"City of Nebula\",\r\n    \"edition\": 1,\r\n    \"year_published\": \"1984\",\r\n    \"author\": {\r\n      \"id\": \"507f1f77bcf86cd799439011\",\r\n      \"name\": \"Isaac Asimov\",\r\n      \"birth_date\": \"2017-07-21\"\r\n    },\r\n    \"publisher\": \"Penguin Random House\",\r\n    \"language\": \"bengali\",\r\n    \"genre\": \"thriller\"\r\n  },\r\n  \"success\": true\r\n}",
+              "status": "Book updated successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "9ddeb3ef-8b90-4e76-8ef1-c8aa23ecb8e7"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "2974dbd0-73e2-4ea8-8838-a821bbd90b39"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "Unauthorized",
+              "code": 401,
+              "name": "Response_401",
+              "id": "be14a1ed-5a5b-47b6-82b2-ba44ba9966fd"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The specified resource was not found",
+              "code": 404,
+              "name": "Response_404",
+              "id": "3892ac22-87ed-4f2e-8953-c1757710eb8d"
+            }
+          ]
+        },
+        {
+          "id": "8498205b-ef69-4e51-9d82-67893d1968cf",
+          "name": "logUser",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "users/login"
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"password\": \"pass123\",\r\n  \"email\": \"marco@email.com\"\r\n}",
+              "disabled": false
+            },
+            "description": "The user is logged in with its credentials.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\r\n  \"id\": \"507f1f77bcf86cd799439011\",\r\n  \"name\": \"Marco\",\r\n  \"email\": \"marco@email.com\"\r\n}",
+              "status": "User logged successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "0a97f7e0-839b-4ab2-a590-e67ed4024c6c"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "65a05eb6-eb30-4eb5-bb75-3a1426c085f1"
+            }
+          ]
+        },
+        {
+          "id": "b1eaf83a-5931-4a79-a85b-78a8a618578c",
+          "name": "createUser",
+          "request": {
+            "url": {
+              "host": "{{default}}",
+              "path": [
+                "users/signup"
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "disabled": false
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Marco\",\r\n  \"password\": \"pass123\",\r\n  \"email\": \"marco@email.com\"\r\n}",
+              "disabled": false
+            },
+            "description": "A new `User` is created with the data provided.\n"
+          },
+          "response": [
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"id\": \"507f1f77bcf86cd799439011\",\r\n  \"name\": \"Marco\",\r\n  \"email\": \"marco@email.com\"\r\n}",
+              "status": "User logged successfully.",
+              "code": 200,
+              "name": "Response_200",
+              "id": "34e1e163-4772-49e4-b3da-1c97d70afe1f"
+            },
+            {
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "disabled": false
+                }
+              ],
+              "body": "{\r\n  \"success\": false,\r\n  \"code\": \"002\",\r\n  \"message\": \"message89\"\r\n}",
+              "status": "The request is not correct",
+              "code": 400,
+              "name": "Response_400",
+              "id": "07440580-d517-4617-a540-0a26ac6ebd3d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "default",
+      "value": "https://api.example.com/v1"
+    },
+    {
+      "key": "default1",
+      "value": "https://sandbox-api.example.com:8443/v1"
+    }
+  ]
+}

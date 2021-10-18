@@ -4,9 +4,10 @@ const mongoose = require('mongoose')
 const app = require('../../app')
 
 const User = require('../../models/user')
+const { Code } = require('../../models/error')
 
 // Endpoint urls
-const CREATE_USER_URL = '/api/v1/user/sign-up'
+const CREATE_USER_URL = '/api/v1/users/sign-up'
 // const TOKEN_URL = '/api/v1/user/login'
 
 // source: "https://www.rithmschool.com/courses/intermediate-node-express/api-tests-with-jest"
@@ -15,7 +16,7 @@ const createUser = async (payload) => {
   await User(payload).save()
 }
 
-describe('Unauthenticated User Api Test', () => {
+describe('User Api Test', () => {
   let server = null
   let request = null
 
@@ -38,7 +39,6 @@ describe('Unauthenticated User Api Test', () => {
 
   it('Create new user sucess', async () => {
     const payload = {
-      username: 'testuser',
       email: 'test@test.com',
       password: 'pass1234',
       name: 'test'
@@ -49,15 +49,16 @@ describe('Unauthenticated User Api Test', () => {
       .send(payload)
 
     expect(response.statusCode).toBe(201)
-    expect(response.body).toHaveProperty('email')
-    expect(response.body).toHaveProperty('username')
-    expect(response.body).toHaveProperty('name')
-    expect(response.body).not.toHaveProperty('password')
+    expect(response.body).toHaveProperty('user')
+    expect(response.body.user).toHaveProperty('id')
+    expect(response.body.user).toHaveProperty('email')
+    expect(response.body.user).toHaveProperty('name')
+    expect(response.body.user).not.toHaveProperty('password')
+    expect(response.body).toHaveProperty('success', true)
   })
 
   it('Create user exists', async () => {
     const payload = {
-      username: 'testuser1',
       email: 'test@test.com',
       password: 'pass1234',
       name: 'test'
@@ -71,7 +72,8 @@ describe('Unauthenticated User Api Test', () => {
 
     expect(response.statusCode).toBe(400)
     expect(response.body).toHaveProperty('success', false)
-    expect(response.body).toHaveProperty('message')
+    expect(response.body).toHaveProperty('code', 'U001')
+    expect(response.body).toHaveProperty('message', Code.U001.value)
   })
 
   it('Create new user invalid data', async () => {
@@ -86,8 +88,25 @@ describe('Unauthenticated User Api Test', () => {
 
     expect(response.statusCode).toBe(400)
     expect(response.body).toHaveProperty('success', false)
-    expect(response.body).toHaveProperty('message')
-    expect(response.body.message.length).toBe(2)
+    expect(response.body).toHaveProperty('code', 'U002')
+    expect(response.body).toHaveProperty('message', Code.U002.value)
+  })
+
+  it('Create new user with invalid email', async () => {
+    const payload = {
+      email: 'test',
+      password: 'pass123',
+      name: 'test'
+    }
+
+    const response = await request
+      .post(CREATE_USER_URL)
+      .send(payload)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'U003')
+    expect(response.body).toHaveProperty('message', Code.U003.value)
   })
 })
 

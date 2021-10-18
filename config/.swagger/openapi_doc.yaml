@@ -379,16 +379,22 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/User'
-                  - type: object
+                
                 required:
                   - token
                 properties:
-                  token:
-                    type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-                
+                  user:
+                      allOf:
+                        - $ref: '#/components/schemas/User'
+                        - type: object
+                      required:
+                        - token
+                      properties:
+                        token:
+                          type: string
+                          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                  success:
+                    type: boolean
         "400":
           description: The request is not correct
           content:
@@ -416,7 +422,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                required:
+                  - success
+                  - book
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    $ref: '#/components/schemas/User'
+
         "400":
           description: The request is not correct
           content:
@@ -456,7 +470,6 @@ components:
     User:
       required:
       - id
-      - token
       properties:
         id:
           type: string
@@ -612,6 +625,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+
   securitySchemes:
     Bearer:
       type: http

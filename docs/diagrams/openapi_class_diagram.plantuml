@@ -1,0 +1,100 @@
+@startuml
+
+class BasicUser {
+  email * : string
+}
+
+class LogUser {
+    password *: string
+}
+BasicUser <|-- LogUser
+
+class NewUser {
+    name: string
+}
+LogUser <|-- NewUser
+
+class User {
+    id * : string
+    name: string
+}
+BasicUser <|-- User
+
+class BookProperties {
+  isbn * : string
+  title * : string
+  edition  : integer
+  year_published  : string
+  author  : Author
+  publisher  : string
+  language  : Language
+  genre  : Genre
+
+}
+BookProperties -- Author  :  author
+BookProperties -- Language  :  language
+BookProperties -- Genre  :  genre
+
+class BasicBook {
+  isbn * : string
+  title * : string
+  author  : Author
+
+}
+BasicBook -- Author  :  author
+
+class Book {
+  id * : string
+}
+BookProperties <|-- Book
+
+class SuccessBook {
+  book * : Book
+  success * : boolean
+
+}
+SuccessBook -- Book  :  book
+
+class Author {
+  id * : string
+  name * : string
+  birth_date  : date
+
+}
+
+class Error {
+  success * : boolean
+  code * : Code
+  message  : string
+
+}
+Error -- Code  :  code
+
+enum Language {
+    chinese
+    spanish
+    english
+    hindi
+    arabic
+    portuguese
+    bengali
+    russian
+    japanese
+    french
+    german
+}
+
+enum Genre{
+    fantasy
+    science_fiction
+    adventure
+    romance
+    horror
+    thriller
+    LGTBQ
+    mistery
+    science
+}
+
+enum Code {}
+@enduml

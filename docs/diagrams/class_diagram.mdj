@@ -147,6 +147,7 @@
 											"model": {
 												"$ref": "AAAAAAF8hF042mSHKMY="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 397,
 											"top": 293,
@@ -166,7 +167,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 397,
-											"top": 308,
+											"top": 293,
 											"width": 192.36572265625,
 											"height": 13,
 											"text": "+email: string {unique}",
@@ -183,7 +184,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 397,
-											"top": 323,
+											"top": 308,
 											"width": 192.36572265625,
 											"height": 13,
 											"text": "+password: string",
@@ -200,7 +201,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 397,
-											"top": 338,
+											"top": 323,
 											"width": 192.36572265625,
 											"height": 13,
 											"text": "+name: string",
@@ -211,7 +212,7 @@
 									"left": 392,
 									"top": 273,
 									"width": 202.36572265625,
-									"height": 83
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -224,7 +225,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 392,
-									"top": 356,
+									"top": 341,
 									"width": 202.36572265625,
 									"height": 10
 								},
@@ -266,7 +267,7 @@
 							"left": 392,
 							"top": 248,
 							"width": 202.36572265625,
-							"height": 121,
+							"height": 103,
 							"nameCompartment": {
 								"$ref": "AAAAAAF8hFosW2IRcbI="
 							},
@@ -518,7 +519,7 @@
 											"top": 368,
 											"width": 207,
 											"height": 13,
-											"text": "+language: Language",
+											"text": "+language: Language[*]",
 											"horizontalAlignment": 0
 										},
 										{
@@ -535,7 +536,7 @@
 											"top": 383,
 											"width": 207,
 											"height": 13,
-											"text": "+genre: Genre",
+											"text": "+genre: Genre[*]",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2234,7 +2235,8 @@
 							"documentation": "Language in which the book was written",
 							"type": {
 								"$ref": "AAAAAAF8hFreGGK6Jrw="
-							}
+							},
+							"multiplicity": "*"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -2246,7 +2248,8 @@
 							"documentation": "Subject of the book",
 							"type": {
 								"$ref": "AAAAAAF8hFsxUGNc9DI="
-							}
+							},
+							"multiplicity": "*"
 						}
 					]
 				},
