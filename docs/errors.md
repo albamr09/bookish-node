@@ -13,9 +13,11 @@
 - Acronym: 'U'
 
 | **CODE** | **Message** |
-| U001| 'User already exists' |
-| U002| 'Missing required fields' |
-| U003| M004 |
+| U001 | 'User already exists' |
+| U002 | 'Missing required fields' |
+| U003 | M004 |
+| U004 | 'Wrong email or password' |
+| U005 | 'This email does not exist' |
 
 ## Books 
 

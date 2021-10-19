@@ -10,7 +10,9 @@ const ErrorMessage = new Enum({
 const Code = new Enum({
   U001: 'User already exists',
   U002: 'Missing required fields',
-  U003: ErrorMessage.M004.value
+  U003: ErrorMessage.M004.value,
+  U004: 'Wrong email of password',
+  U005: 'This email does not exist'
 })
 
 class ApiError {

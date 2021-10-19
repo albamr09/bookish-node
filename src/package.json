@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/albamr09/bookish-node#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "enum": "^3.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -40,6 +41,7 @@
   "jest": {
     "verbose": true,
     "name": "bookish",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testTimeout": 150000
   }
 }

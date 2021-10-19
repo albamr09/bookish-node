@@ -7,8 +7,8 @@ const User = require('../../models/user')
 const { Code } = require('../../models/error')
 
 // Endpoint urls
-const CREATE_USER_URL = '/api/v1/users/sign-up'
-// const TOKEN_URL = '/api/v1/user/login'
+const SIGNUP_USER_URL = '/api/v1/users/sign-up'
+const LOGIN_USER_URL = '/api/v1/users/login'
 
 // source: "https://www.rithmschool.com/courses/intermediate-node-express/api-tests-with-jest"
 
@@ -16,27 +16,27 @@ const createUser = async (payload) => {
   await User(payload).save()
 }
 
-describe('User Api Test', () => {
-  let server = null
-  let request = null
+let server = null
+let request = null
 
-  beforeAll(async () => {
-    mongoose.connect(process.env.DB_URI)
-    await User.deleteMany()
+beforeAll(async () => {
+  mongoose.connect(process.env.DB_URI)
+  await User.deleteMany()
 
-    server = app.listen()
-    request = supertest.agent(server)
-  })
+  server = app.listen()
+  request = supertest.agent(server)
+})
 
-  afterAll(() => {
-    mongoose.connection.close()
-    server.close()
-  })
+afterAll(() => {
+  mongoose.connection.close()
+  server.close()
+})
 
-  beforeEach(async () => {
-    await User.deleteMany()
-  })
+beforeEach(async () => {
+  await User.deleteMany()
+})
 
+describe('Sign Up User', () => {
   it('Create new user sucess', async () => {
     const payload = {
       email: 'test@test.com',
@@ -45,7 +45,7 @@ describe('User Api Test', () => {
     }
 
     const response = await request
-      .post(CREATE_USER_URL)
+      .post(SIGNUP_USER_URL)
       .send(payload)
 
     expect(response.statusCode).toBe(201)
@@ -54,6 +54,7 @@ describe('User Api Test', () => {
     expect(response.body.user).toHaveProperty('email')
     expect(response.body.user).toHaveProperty('name')
     expect(response.body.user).not.toHaveProperty('password')
+    expect(response.body.user).toHaveProperty('token')
     expect(response.body).toHaveProperty('success', true)
   })
 
@@ -64,10 +65,10 @@ describe('User Api Test', () => {
       name: 'test'
     }
 
-    createUser(payload)
+    await createUser(payload)
 
     const response = await request
-      .post(CREATE_USER_URL)
+      .post(SIGNUP_USER_URL)
       .send(payload)
 
     expect(response.statusCode).toBe(400)
@@ -83,7 +84,7 @@ describe('User Api Test', () => {
     }
 
     const response = await request
-      .post(CREATE_USER_URL)
+      .post(SIGNUP_USER_URL)
       .send(payload)
 
     expect(response.statusCode).toBe(400)
@@ -100,7 +101,7 @@ describe('User Api Test', () => {
     }
 
     const response = await request
-      .post(CREATE_USER_URL)
+      .post(SIGNUP_USER_URL)
       .send(payload)
 
     expect(response.statusCode).toBe(400)
@@ -110,21 +111,78 @@ describe('User Api Test', () => {
   })
 })
 
-//    it('Generate token success', ()=> {
-//        const payload = {
-//            'email': 'test@test.com',
-//            'password': 'pass1234'
-//        }
-//
-//        create_user(payload);
-//
-//        request
-//            .post(CREATE_USER_URL)
-//            .send(payload)
-//            .expect(200)
-//        done()
-//    })
+describe('Login User', () => {
+  it('Login user success', async () => {
+    const payload = {
+      email: 'test@test.com',
+      password: '1234pass'
+    }
 
-// describe('Authenticated User Api Test', () => {
-// })
-// https://tekloon.dev/how-I-setup-unit-test-for-mongodb-using-jest-mongoose
+    await createUser({ ...payload, name: 'test' })
+
+    const response = await request
+      .post(LOGIN_USER_URL)
+      .send(payload)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('user')
+    expect(response.body.user).toHaveProperty('id')
+    expect(response.body.user).toHaveProperty('email')
+    expect(response.body.user).toHaveProperty('name')
+    expect(response.body.user).not.toHaveProperty('password')
+    expect(response.body.user).toHaveProperty('token')
+    expect(response.body).toHaveProperty('success', true)
+  })
+
+  it('Login user with erroneous data', async () => {
+    const payload = {
+      email: 'test@test.com',
+      password: 'pass1234'
+    }
+
+    await createUser(payload)
+
+    const response = await request
+      .post(LOGIN_USER_URL)
+      .send({ email: 'test@test.com', password: 'wrongpass' })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'U004')
+    expect(response.body).toHaveProperty('message', Code.U004.value)
+  })
+
+  it('Login user without required fields', async () => {
+    const payload = {
+      email: 'test@test.com',
+      password: 'pass1234'
+    }
+
+    await createUser(payload)
+
+    const response = await request
+      .post(LOGIN_USER_URL)
+      .send({ password: payload.password })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'U002')
+    expect(response.body).toHaveProperty('message', Code.U002.value)
+  })
+
+  it('Login user does not exist', async () => {
+    const payload = {
+      email: 'test@test.com',
+      password: 'pass1234'
+    }
+
+    const response = await request
+      .post(LOGIN_USER_URL)
+      .send(payload)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'U005')
+    expect(response.body).toHaveProperty('message', Code.U005.value)
+  })
+})

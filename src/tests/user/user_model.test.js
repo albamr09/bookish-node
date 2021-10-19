@@ -24,7 +24,7 @@ describe('User Model Tests', () => {
     expect(savedUser._id).toBeDefined()
     expect(savedUser.name).toBe(userData.name)
     expect(savedUser.email).toBe(userData.email)
-    expect(savedUser.password).toBe(userData.password)
+    expect(savedUser.password).not.toBe(userData.password)
   })
 
   it('Create a user with invalid fields', async () => {
