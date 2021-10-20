@@ -12,7 +12,9 @@ const Code = new Enum({
   U002: 'Missing required fields',
   U003: ErrorMessage.M004.value,
   U004: 'Wrong email of password',
-  U005: 'This email does not exist'
+  U005: 'This email does not exist',
+  A001: 'User not authenticated',
+  B001: 'No book was found'
 })
 
 class ApiError {

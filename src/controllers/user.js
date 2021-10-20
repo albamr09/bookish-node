@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
-const { Code, ApiError, ErrorMessage } = require('../models/error')
+
+const { User, Code, ApiError, ErrorMessage } = require('../models/index')
 
 const signUp = async (req, res) => {
   try {
@@ -45,7 +45,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body
 
-    if (!email || !password) {
+    if (!email || !email.trim() || !password || !password.trim()) {
       return res.status(400).json({ ...new ApiError(Code.U002) })
     }
 

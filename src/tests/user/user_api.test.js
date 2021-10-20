@@ -3,14 +3,11 @@ const mongoose = require('mongoose')
 
 const app = require('../../app')
 
-const User = require('../../models/user')
-const { Code } = require('../../models/error')
+const { User, Code } = require('../../models/index')
 
 // Endpoint urls
 const SIGNUP_USER_URL = '/api/v1/users/sign-up'
 const LOGIN_USER_URL = '/api/v1/users/login'
-
-// source: "https://www.rithmschool.com/courses/intermediate-node-express/api-tests-with-jest"
 
 const createUser = async (payload) => {
   await User(payload).save()

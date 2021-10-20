@@ -53,6 +53,15 @@ paths:
         schema:
           type: integer
           example: 1
+      - name: isbn
+        in: query
+        description: The isbn of the `Book`.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "978-3-16-148410-0"
       - name: title
         in: query
         description: The title of the `Book`.
@@ -112,12 +121,6 @@ paths:
                       $ref: '#/components/schemas/BasicBook'
                   success:
                     type: boolean
-        "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "401":
           description: Unauthorized
           content:
@@ -491,6 +494,8 @@ components:
       required:
       - isbn
       - title
+      - author
+      - langauge
       type: object
       properties:
         isbn:
@@ -517,10 +522,15 @@ components:
           $ref: '#/components/schemas/Genre'
     BasicBook:
       required:
+      - id
       - isbn
       - title
       type: object
       properties:
+        id:
+          type: string
+          format: objectid
+          example: '507f1f77bcf86cd799439011'
         isbn:
           type: string
           example: 978-3-16-148410-0
@@ -592,6 +602,7 @@ components:
       - japanese
       - french
       - german
+      - unknown
     Error:
       required:
       - code

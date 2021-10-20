@@ -18,7 +18,7 @@ AuthorWrote(*book_id*, *author_id*)
 
 ## MongoDB Data Model
 
-We now derive the `Data Model` for `MongoDB`.
+We now derive the `Data Model` for `MongoDB`, and we specify the restrictions, (i.e. if the attribute is required and must be validated).
 
 - User
 
@@ -31,21 +31,31 @@ We now derive the `Data Model` for `MongoDB`.
 }
 ```
 
+    - email: required and valid
+    - password: required
+
 - Book 
 
 ```json
 {
   _id: <ObjectId>,
-  isbn: 
+  isbn: <String>
   title: <String>,
   year_published: <Year>,
   publisher: <String>,
   edition: <Integer>,
-  Language: <[Integer]>,
-  Genre: <[Integer]>,
+  Language: <[String]>,
+  Genre: <[String]>,
   author: <[Author._id]>
 }
 ```
+
+    - isbn: required valid unique
+    - title: required
+    - year_published: valid
+    - language: required valid 
+    - genre: valid
+    - author: required
 
 - Author
 
@@ -56,3 +66,6 @@ We now derive the `Data Model` for `MongoDB`.
   birth_date: <ISODate>,
 }
 ```
+
+    - name: required
+    - birth_date: valid

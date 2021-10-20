@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const User = require('../../models/user')
+
+const { User } = require('../../models/index')
 
 const userData = { name: 'test', email: 'test@test.com', password: 'test1234', username: 'testname' }
 

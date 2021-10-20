@@ -1,6 +1,6 @@
 const express = require('express')
 
-const userRouter = require('./routes/user')
+const { userRouter, bookRouter } = require('./routes/index')
 
 // App
 const app = express()
@@ -11,5 +11,6 @@ app.use(express.urlencoded({ extended: true }))
 
 // Routing Middleware
 app.use('/api/v1/users/', userRouter)
+app.use('/api/v1/books/', bookRouter)
 
 module.exports = app
