@@ -1,3 +1,5 @@
+# Data Model
+
 ## Relational Model
 
 This section illustrates the relational model resulting from entity relationship model. Here bold keywords signal the key of a relation and italic signals the foreign key. 
@@ -41,12 +43,12 @@ We now derive the `Data Model` for `MongoDB`, and we specify the restrictions, (
   _id: <ObjectId>,
   isbn: <String>
   title: <String>,
-  year_published: <Year>,
+  year_published: <Number>,
   publisher: <String>,
   edition: <Integer>,
   Language: <[String]>,
   Genre: <[String]>,
-  author: <[Author._id]>
+  author: <[Author]>
 }
 ```
 

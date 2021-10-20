@@ -41,7 +41,7 @@ const BookSchema = new mongoose.Schema({
     enum: [...Genre]
   },
   author: {
-    type: AuthorSchema,
+    type: [AuthorSchema],
     required: [true, 'message']
   }
 })
