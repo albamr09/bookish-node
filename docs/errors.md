@@ -6,6 +6,14 @@
 | M002 | 'Email required' |
 | M003 | 'Password required' |
 | M004 | 'Email not valid: ' |
+| M005 | 'ISBN required'|
+| M006 | 'Title required'|
+| M007 | 'Language required'|
+| M008 | 'Year cannot be negative'|
+| M009 | 'Year cannot be greater than current year'|
+| M010 | 'Edition cannot be negative'|
+| M011 | 'ISBN not valid: '|
+| M012 | 'Author name required' |
 
 # Error Codes
 

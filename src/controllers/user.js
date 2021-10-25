@@ -10,7 +10,7 @@ const signUp = async (req, res) => {
       .then((result) => {
         // Create a token
         const token = jwt.sign({ id: result._id }, process.env.TOKEN_SECRET, {
-          expiresIn: '1800'
+          expiresIn: '4800'
         })
 
         return res.status(201).json({
@@ -29,7 +29,7 @@ const signUp = async (req, res) => {
           errorObject = new ApiError(Code.U001)
         } else if (`${error}`.includes(ErrorMessage.M002.value) ||
           `${error}`.includes(ErrorMessage.M003.value)) {
-          errorObject = new ApiError(Code.U002)
+          errorObject = new ApiError(Code.U002, Object.keys(error.errors))
         } else if (`${error}`.includes(ErrorMessage.M004.value)) {
           errorObject = new ApiError(Code.U003)
         }
@@ -37,7 +37,7 @@ const signUp = async (req, res) => {
       })
   } catch (error) {
     console.error(error)
-    res.status(500).send(error)
+    return res.status(500).send(error)
   }
 }
 
@@ -78,7 +78,7 @@ const login = async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    res.status(500).send(error)
+    return res.status(500).send(error)
   }
 }
 

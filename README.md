@@ -28,7 +28,7 @@ Simple Book API.
 To build the production image with:
 
 ```console
-$ docker-compose uild
+$ docker-compose build
 ```
 
 To start the application with:

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { User } = require('../../models/index')
+const { User, ErrorMessage } = require('../../models/index')
 
 const userData = { name: 'test', email: 'test@test.com', password: 'test1234', username: 'testname' }
 
@@ -19,8 +19,7 @@ describe('User Model Tests', () => {
   })
 
   it('Create a new user', async () => {
-    const user = new User(userData)
-    const savedUser = await user.save()
+    const savedUser = await new User(userData).save()
 
     expect(savedUser._id).toBeDefined()
     expect(savedUser.name).toBe(userData.name)
@@ -28,21 +27,20 @@ describe('User Model Tests', () => {
     expect(savedUser.password).not.toBe(userData.password)
   })
 
-  it('Create a user with invalid fields', async () => {
+  it('Create a user without required fields', async () => {
     const invalidUserData = { ...userData }
     delete invalidUserData.email
-    const user = new User(invalidUserData)
 
     let error
 
     try {
-      const savedUser = await user.save()
-      error = savedUser
+      error = await new User(invalidUserData).save()
     } catch (err) {
       error = err
     }
 
     expect(error).toBeInstanceOf(mongoose.Error.ValidationError)
+    expect(error.toString()).toEqual(expect.stringContaining(ErrorMessage.M002.value))
     expect(error.errors.email).toBeDefined()
   })
 
@@ -63,8 +61,7 @@ describe('User Model Tests', () => {
   it('Create user with undefined fields', async () => {
     const newUserData = { ...userData }
     delete newUserData.name
-    const user = new User(newUserData)
-    await user.save()
+    const user = await new User(newUserData).save()
 
     expect(user._id).toBeDefined()
     expect(user.name).toBeUndefined()

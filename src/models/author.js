@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
 const Model = mongoose.model
 
+const { ErrorMessage } = require('./error')
+
 const AuthorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'message']
+    required: [true, ErrorMessage.M012.value]
   },
   birth_date: Date
 })

@@ -1,3 +1,16 @@
-const languages = ['chinese', 'spanish', 'english', 'hindi', 'arabic', 'portuguese', 'bengali', 'russian', 'japanese', 'french', 'german', 'unknown']
+const Language = {
+    Chinese: 'chinese',
+    Spanish: 'spanish',
+    English: 'english',
+    Hindi: 'hindi',
+    Arabic: 'arabic',
+    Portuguese: 'portuguese',
+    Bengali: 'bengali',
+    Russian: 'russian',
+    Japanese: 'japanese',
+    French: 'french',
+    German: 'german',
+    Unknown: 'unknown'
+}
 
-module.exports = languages
+module.exports = Language

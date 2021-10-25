@@ -1,3 +1,14 @@
-const genres = ['fantasy', 'science_fiction', 'adventure', 'romance', 'horror', 'thriller', 'LGTBQ', 'mistery', 'science']
+const Genre = {
+    Fantasy: 'fantasy',
+    ScienceFiction: 'science_fiction',
+    Adventure: 'adventure',
+    Romance: 'romance',
+    Horror: 'horror',
+    Thriller: 'thriller',
+    LGTBQ: 'LGTBQ',
+    Mistery: 'mistery',
+    Science: 'science'
+}
 
-module.exports = genres
+
+module.exports = Genre

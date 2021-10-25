@@ -1,48 +1,56 @@
 const mongoose = require('mongoose')
 const Model = mongoose.model
 
-const { AuthorSchema } = require('./author')
 const Language = require('./language')
 const Genre = require('./genre')
+const { ErrorMessage } = require('./error')
+const { AuthorSchema } = require('./author')
 
 const BookSchema = new mongoose.Schema({
   isbn: {
     type: String,
     unique: true,
-    required: [true, 'message'],
+    required: [true, ErrorMessage.M005.value],
     validate: {
       validator: function (v) {
         return /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(v)
       },
-      message: props => `message ${props.value}`
+      message: props => `${ErrorMessage.M011.value} ${props.value}`
     }
   },
   title: {
     type: String,
-    required: [true, 'message']
+    required: [true, ErrorMessage.M006.value]
   },
   year_published: {
     type: Number,
-    min: [0, 'message'],
-    max: [new Date().getFullYear(), 'message']
+    min: [0, ErrorMessage.M008.value],
+    max: [new Date().getFullYear(), ErrorMessage.M009.value]
   },
   publisher: String,
   edition: {
     type: Number,
-    min: [0, 'message']
+    min: [0, ErrorMessage.M010.value]
   },
   language: {
     type: String,
-    required: [true, 'message'],
-    enum: [...Language]
+    required: [true, ErrorMessage.M007.value],
+    enum: {
+      values: [...Object.values(Language)],
+      message: ErrorMessage.M013.value
+    }
   },
   genre: {
     type: String,
-    enum: [...Genre]
+    enum: {
+      values: [...Object.values(Genre)],
+      message: ErrorMessage.M014.value
+    }
   },
   author: {
     type: [AuthorSchema],
-    required: [true, 'message']
+    default: undefined,
+    required: [true, ErrorMessage.M015.value]
   }
 })
 

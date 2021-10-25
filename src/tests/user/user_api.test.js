@@ -74,7 +74,7 @@ describe('Sign Up User', () => {
     expect(response.body).toHaveProperty('message', Code.U001.value)
   })
 
-  it('Create new user invalid data', async () => {
+  it('Create new user without required email', async () => {
     const payload = {
       password: 'pass1234',
       name: 'test'
@@ -87,7 +87,27 @@ describe('Sign Up User', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body).toHaveProperty('success', false)
     expect(response.body).toHaveProperty('code', 'U002')
-    expect(response.body).toHaveProperty('message', Code.U002.value)
+    expect(response.body).toHaveProperty('message')
+    expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code.U002.value}: email`))
+  })
+
+  it('Create new user without required password', async () => {
+    const payload = {
+      email: 'test@test.com',
+      name: 'test'
+    }
+
+    const response = await request
+      .post(SIGNUP_USER_URL)
+      .send(payload)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'U002')
+    expect(response.body).toHaveProperty('message')
+    expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code.U002.value}: password`))
   })
 
   it('Create new user with invalid email', async () => {
