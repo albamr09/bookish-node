@@ -37,18 +37,12 @@ jobs:
         uses: actions/checkout@v2
       - name: Build docker images 
         run: docker-compose -f docker-compose.dev.yml build --no-cache
-      - name: Start database
-        run: docker-compose -f docker-compose.dev.yml up -d db
+      - name: Start containers 
+        run: docker-compose -f docker-compose.dev.yml up -d app
       - name: Check running containers
         run: docker ps -a
       - name: Check logs of database
         run: docker logs mongodb
-      - name: Start app 
-        run: docker-compose -f docker-compose.dev.yml up -d app
-      - name: Check running containers
-        run: docker ps -a
-      - name: Check logs of app
-        run: docker logs bookish_node_dev
       - name: Run test
         run: docker exec bookish_node_dev sh -c "npm run test"
 
