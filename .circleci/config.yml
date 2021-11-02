@@ -1,0 +1,50 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  build-test:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: ubuntu:latest
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    environment:
+      PORT: 8000
+      HOST: 127.0.0.1
+      TOKEN_SECRET: 1bc
+      DB_ROOT_USER: devroot
+      DB_ROOT_PASSWORD: devroot
+      DB_USER: usertest
+      DB_PASSWORD: passtest
+      DB_NAME: bookishDBtest
+      DB_PORT: 27017
+      DB_HOST: 127.0.0.1
+      DB_CONFIG: "./config/.docker"
+      DB_INIT: "./config/.docker/docker-entrypoint-initdb.d/"
+      DB_DATA: "./config/.docker/mongo-volume"
+      DB_URI: "mongodb://usertest:passtest@db:8000/bookishDBtest"
+      SWAGGER_PORT: 80
+      SWAGGER_DIR: "./config/.swagger/"
+      SWAGGER_API_URL: "doc/openapi_doc.yaml"
+      REDOC_PORT: 8082
+      REDOC_DIR: "./config/.redoc"
+      REDOC_SRC: "./config/.redoc/src"
+      REDOC_CONF: "./config/.redoc/config/nginx.conf"
+    steps:
+      - checkout
+      - run:
+          name: "Build and test app"
+          command: |
+            docker-compose -f docker-compose.dev.yml build --no-cache
+            docker-compose -f docker-compose.dev.yml run app sh -c "npm test"
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  build-test-workflow:
+    jobs:
+      - build-test
