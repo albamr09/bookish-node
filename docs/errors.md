@@ -14,6 +14,9 @@
 | M010 | 'Edition cannot be negative'|
 | M011 | 'ISBN not valid: '|
 | M012 | 'Author name required' |
+| M013 | 'This language is not supported'|
+| M014 | 'This genre is not supported'|
+| M015 | 'Author required'|
 
 # Error Codes
 
@@ -43,3 +46,6 @@
 | **CODE** | **Message** |
 |---|---|
 | B001 | 'No book was found' |
+| B002 | 'Missing required fields'|
+| B003 | 'Data is not valid'|
+| B004 | 'This ISBN is already registered'|

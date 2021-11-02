@@ -1,14 +1,12 @@
-const { valueToNode } = require('@babel/types')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 
 const app = require('../../app')
 
-const { Author, Book, User, Code, Language, Genre } = require('../../models/index')
+const { Author, Book, User, Language, Genre, Code } = require('../../models/index')
 
-// Endpoint urls
+const BOOKS_URL = '/api/v1/books'
 const SIGNUP_USER_URL = '/api/v1/users/sign-up'
-const BOOKS_URL = '/api/v1/books/'
 
 const bookData = {
   isbn: '978-3-16-148410-0',
@@ -22,17 +20,6 @@ const bookData = {
     name: 'testauthor',
     birth_date: Date.now()
   }
-}
-
-const defaultQuery = {
-  limit: 1,
-  isbn: bookData.isbn,
-  title: bookData.title,
-  author: bookData.author.name,
-  publisher: bookData.publisher,
-  edition: bookData.edition,
-  language: bookData.language,
-  genre: bookData.genre
 }
 
 let server = null
@@ -51,64 +38,7 @@ const signUser = async () => {
 }
 
 const createBook = async (bookData) => {
-  await new Book({ ...bookData }).save()
-}
-
-const testRequired = async (attribute, errorCode) => {
-  const invalidData = { ...bookData }
-  delete invalidData[attribute]
-
-  const response = await request
-    .post(BOOKS_URL)
-    .set('Authorization', `Bearer ${token}`)
-    .send(invalidData)
-
-  expect(response.statusCode).toBe(400)
-  expect(response.body).toHaveProperty('code', errorCode)
-  expect(response.body).toHaveProperty('message')
-  expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code[errorCode].value}: ${attribute}`))
-}
-
-const testInvalid = async (attribute, newValue, errorCode) => {
-  const invalidData = { ...bookData }
-  invalidData[attribute] = newValue
-
-  const response = await request
-    .post(BOOKS_URL)
-    .set('Authorization', `Bearer ${token}`)
-    .send(invalidData)
-
-  expect(response.statusCode).toBe(400)
-  expect(response.body).toHaveProperty('code', errorCode)
-  expect(response.body).toHaveProperty('message')
-  expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code[errorCode].value}: ${attribute}`))
-}
-
-const testSearch = async (attribute, value) => {
-  const newBookData = { ...bookData, author: { ...bookData.author } }
-  newBookData[attribute] = value
-  newBookData['isbn'] = '978-3-16-148410-1'
-
-  await createBook(bookData)
-  await createBook(newBookData)
-
-  const response = await request
-    .get(BOOKS_URL)
-    .set('Authorization', `Bearer ${token}`)
-    .query({ [attribute]: bookData[attribute] })
-
-  expect(response.statusCode).toBe(200)
-  expect(response.body).toHaveProperty('success', true)
-  expect(response.body).toHaveProperty('books')
-  expect(response.body.books.length).toBe(1)
-  expect(response.body.books[0]).toHaveProperty('id')
-  expect(response.body.books[0]).toHaveProperty('isbn', bookData.isbn)
-  expect(response.body.books[0]).toHaveProperty('title', bookData.title)
-  expect(response.body.books[0]).toHaveProperty('author')
-  expect(response.body.books[0].author.length).toBe(1)
-  expect(response.body.books[0].author[0]).toBe(bookData.author.name)
+  return await new Book({ ...bookData }).save()
 }
 
 beforeAll(async () => {
@@ -119,8 +49,6 @@ beforeAll(async () => {
 
   server = app.listen()
   request = supertest.agent(server)
-
-  await signUser()
 })
 
 afterAll(() => {
@@ -134,20 +62,10 @@ beforeEach(async () => {
   await User.deleteMany()
 })
 
-describe('Unauthenticated Book Api Test', () => {
-  it('Search for books', async () => {
+describe('Unathenticated Get Book Api Test', () => {
+  it('Get Book', async () => {
     const response = await request
-      .get(BOOKS_URL)
-
-    expect(response.statusCode).toBe(401)
-    expect(response.body).toHaveProperty('success', false)
-    expect(response.body).toHaveProperty('code', 'A001')
-    expect(response.body).toHaveProperty('message', Code.A001.value)
-  })
-
-  it('Create a new book', async () => {
-    const response = await request
-      .post(BOOKS_URL)
+      .get(`${BOOKS_URL}/1`)
 
     expect(response.statusCode).toBe(401)
     expect(response.body).toHaveProperty('success', false)
@@ -156,143 +74,50 @@ describe('Unauthenticated Book Api Test', () => {
   })
 })
 
-describe('Authenticated Book Api Test', () => {
-  it('Search for a book successfully', async () => {
-    
-    await createBook(bookData)
-
-    const response = await request
-      .get(BOOKS_URL)
-      .set('Authorization', `Bearer ${token}`)
-      .query(defaultQuery)
-
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toHaveProperty('success', true)
-    expect(response.body).toHaveProperty('books')
-    expect(response.body.books.length).toBe(1)
-    expect(response.body.books[0]).toHaveProperty('id')
-    expect(response.body.books[0]).toHaveProperty('isbn', defaultQuery.isbn)
-    expect(response.body.books[0]).toHaveProperty('title', defaultQuery.title)
-    expect(response.body.books[0]).toHaveProperty('author')
-    expect(response.body.books[0].author.length).toBe(1)
-    expect(response.body.books[0].author[0]).toBe(defaultQuery.author)
-    expect(response.body.books[0]).not.toHaveProperty('publisher')
-    expect(response.body.books[0]).not.toHaveProperty('language')
-    expect(response.body.books[0]).not.toHaveProperty('genre')
+describe('Authenticated Get Book Api Test', () => {
+  beforeAll(async () => {
+    await signUser()
   })
 
-  // it('Search for a book by title', async () => {
-  //   testSearch('title', 'newtitle')
-  // })
+  it('Get Book by id successfully', async () => {
+    const newBookData = { ...bookData, author: { ...bookData.author } }
+    newBookData.isbn = '978-3-16-148410-1'
 
-  // it('Search for a book by author', async () => {
-  //   testSearch('author', { name: 'newauthor', birth_date: Date.now()})
-  // })
+    const book = await createBook(bookData)
+    await createBook(newBookData)
 
-  it('Find no book', async () => {
     const response = await request
-      .get(BOOKS_URL)
+      .get(`${BOOKS_URL}/${book._id}`)
       .set('Authorization', `Bearer ${token}`)
-      .query(defaultQuery)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('book')
+    expect(response.body.book).toHaveProperty('isbn', book.isbn)
+    expect(response.body.book).toHaveProperty('title', book.title)
+    expect(response.body.book).toHaveProperty('edition', book.edition)
+    expect(response.body.book).toHaveProperty('year_published', book.year_published)
+    expect(response.body.book).toHaveProperty('publisher', book.publisher)
+    expect(response.body.book).toHaveProperty('language', book.language)
+    expect(response.body.book).toHaveProperty('genre', book.genre)
+    expect(response.body.book).toHaveProperty('author')
+    expect(response.body.book.author.length).toBe(1)
+    expect(response.body.book.author[0]).toHaveProperty('name', book.author[0].name)
+  })
+
+  it('Get Book by with non existing id', async () => {
+    const newBookData = { ...bookData, author: { ...bookData.author } }
+    newBookData.isbn = '978-3-16-148410-1'
+
+    await createBook(bookData)
+    await createBook(newBookData)
+
+    const response = await request
+      .get(`${BOOKS_URL}/111111111111111111111111`)
+      .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(404)
     expect(response.body).toHaveProperty('success', false)
     expect(response.body).toHaveProperty('code', 'B001')
     expect(response.body).toHaveProperty('message', Code.B001.value)
-  })
-
-  it('Create a new book successfully', async () => {
-    const response = await request
-      .post(BOOKS_URL)
-      .set('Authorization', `Bearer ${token}`)
-      .send({ ...bookData })
-
-    expect(response.statusCode).toBe(201)
-    expect(response.body).toHaveProperty('success', true)
-    expect(response.body.book).toHaveProperty('id')
-    expect(response.body.book).toHaveProperty('isbn', bookData.isbn)
-    expect(response.body.book).toHaveProperty('title', bookData.title)
-    expect(response.body.book).toHaveProperty('author')
-    expect(response.body.book.author.length).toBe(1)
-    expect(response.body.book.author[0]).toHaveProperty('name', bookData.author.name)
-    expect(response.body.book).toHaveProperty('publisher', bookData.publisher)
-    expect(response.body.book).toHaveProperty('language', bookData.language)
-    expect(response.body.book).toHaveProperty('genre', bookData.genre)
-  })
-
-  it('Create a book without a request body', async () => {
-    const response = await request
-      .post(BOOKS_URL)
-      .set('Authorization', `Bearer ${token}`)
-
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toHaveProperty('code', 'B003')
-    expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code.B003.value}: request body`))
-  })
-
-  it('Create a book without required isbn', async () => {
-    await testRequired('isbn', 'B002')
-  })
-
-  it('Create a book without required title', async () => {
-    await testRequired('title', 'B002')
-  })
-
-  it('Create a book without required author', async () => {
-    await testRequired('author', 'B002')
-  })
-
-  it('Create a book without required author name', async () => {
-    const invalidData = { ...bookData, author: { ...bookData.author } }
-    delete invalidData.author.name
-
-    const response = await request
-      .post(BOOKS_URL)
-      .set('Authorization', `Bearer ${token}`)
-      .send(invalidData)
-
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toHaveProperty('code', 'B002')
-    expect(response.body).toHaveProperty('message')
-    expect(response.body.message.toString())
-      .toEqual(expect.stringContaining(`${Code.B002.value}: author.0.name`))
-  })
-
-  it('Create a book without required language', async () => {
-    await testRequired('language', 'B002')
-  })
-
-  it('Create a book with invalid isbn', async () => {
-    await testInvalid('isbn', '1', 'B003')
-  })
-
-  it('Create a book with invalid year published (negative)', async () => {
-    await testInvalid('year_published', -1, 'B003')
-  })
-
-  it('Create a book with invalid year published (future)', async () => {
-    await testInvalid('year_published', new Date().getFullYear() + 1, 'B003')
-  })
-
-  it('Create a book with invalid langauge', async () => {
-    await testInvalid('language', 'testlanguage', 'B003')
-  })
-
-  it('Create a book with invalid genre', async () => {
-    await testInvalid('genre', 'testgenre', 'B003')
-  })
-
-  it('Create a book that already exists', async () => {
-    await createBook(bookData)
-
-    const response = await request
-      .post(BOOKS_URL)
-      .set('Authorization', `Bearer ${token}`)
-      .send({ ...bookData })
-
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toHaveProperty('code', 'B004')
-    expect(response.body).toHaveProperty('message', Code.B004.value)
   })
 })

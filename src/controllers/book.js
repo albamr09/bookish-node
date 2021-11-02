@@ -1,16 +1,16 @@
 const { Book, Code, ApiError, ErrorMessage } = require('../models/index')
 
 const getBooks = async (req, res) => {
-  try{
-    const { 
+  try {
+    const {
       limit,
-      isbn, 
-      title, 
-      publisher, 
-      edition, 
-      language, 
-      genre, 
-      author 
+      isbn,
+      title,
+      publisher,
+      edition,
+      language,
+      genre,
+      author
     } = req.query
 
     const books = await Book.find({ $or: [{ 'author.name': author }, { isbn }, { title }, { publisher }, { edition }, { language }, { genre }] })
@@ -20,7 +20,7 @@ const getBooks = async (req, res) => {
     } else {
       return res.status(404).json({ ...new ApiError(Code.B001) })
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error)
     return res.status(500).send(error)
   }
@@ -30,26 +30,27 @@ const createBook = async (req, res) => {
   if (Object.keys(req.body).length === 0) {
     return res.status(400).json({ ...new ApiError(Code.B003, 'request body') })
   }
-  try{
-    const { isbn, 
-      title, 
-      year_published, 
-      publisher, 
-      edition, 
-      language, 
-      genre, 
-      author 
+  try {
+    const {
+      isbn,
+      title,
+      year_published,
+      publisher,
+      edition,
+      language,
+      genre,
+      author
     } = req.body
 
-    const book = new Book({ 
-      isbn, 
-      title, 
-      year_published, 
-      publisher, 
-      edition, 
-      language, 
-      genre, 
-      author 
+    const book = new Book({
+      isbn,
+      title,
+      year_published,
+      publisher,
+      edition,
+      language,
+      genre,
+      author
     })
 
     await book.save()
@@ -71,29 +72,73 @@ const createBook = async (req, res) => {
       })
       .catch((error) => {
         let errorObject
-        if (`${error}`.includes(ErrorMessage.M005.value) || 
-        `${error}`.includes(ErrorMessage.M006.value) || 
+        if (`${error}`.includes(ErrorMessage.M005.value) ||
+        `${error}`.includes(ErrorMessage.M006.value) ||
         `${error}`.includes(ErrorMessage.M007.value) ||
         `${error}`.includes(ErrorMessage.M015.value) ||
         `${error}`.includes(ErrorMessage.M012.value)) {
           errorObject = new ApiError(Code.B002, Object.keys(error.errors))
-        } else if (`${error}`.includes(ErrorMessage.M011.value) || 
-          `${error}`.includes(ErrorMessage.M008.value) || 
+        } else if (`${error}`.includes(ErrorMessage.M011.value) ||
+          `${error}`.includes(ErrorMessage.M008.value) ||
           `${error}`.includes(ErrorMessage.M009.value) ||
           `${error}`.includes(ErrorMessage.M010.value) ||
-          `${error}`.includes(ErrorMessage.M011.value) || 
-          `${error}`.includes(ErrorMessage.M013.value) || 
+          `${error}`.includes(ErrorMessage.M011.value) ||
+          `${error}`.includes(ErrorMessage.M013.value) ||
           `${error}`.includes(ErrorMessage.M014.value)) {
-            errorObject = new ApiError(Code.B003, Object.keys(error.errors))
+          errorObject = new ApiError(Code.B003, Object.keys(error.errors))
         } else if (`${error}`.includes(ErrorMessage.M001.value)) {
           errorObject = new ApiError(Code.B004)
         }
         return res.status(400).json({ ...errorObject })
       })
-  } catch(error) {
+  } catch (error) {
     console.error(error)
     return res.status(500).send(error)
   }
 }
 
-module.exports = { getBooks, createBook }
+const getBookById = async (req, res) => {
+  try {
+    const { id } = req.params
+    const book = await Book.findById(id).exec()
+
+    if (!book) {
+      return res.status(404).json({ ...new ApiError(Code.B001) })
+    }
+
+    return res.status(200).json({
+      book: {
+        id: book._id,
+        isbn: book.isbn,
+        title: book.title,
+        year_published: book.year_published,
+        publisher: book.publisher,
+        edition: book.edition,
+        language: book.language,
+        genre: book.genre,
+        author: book.author.map(author => { return { name: author.name, birth_date: author.birth_date } })
+      },
+      success: true
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error)
+  }
+}
+
+const updateBook = async (req, res) => {
+}
+
+const deleteBook = async (req, res) => {
+}
+
+const patchBook = async (req, res) => {
+}
+module.exports = {
+  getBooks,
+  createBook,
+  getBookById,
+  updateBook,
+  deleteBook,
+  patchBook
+}

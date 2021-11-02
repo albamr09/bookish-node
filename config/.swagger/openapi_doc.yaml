@@ -289,6 +289,14 @@ paths:
       responses:
         "204":
           description: Book deleted successfully.
+          content: 
+            application/json:
+              schema:
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
         "400":
           description: The request is not correct
           content:
