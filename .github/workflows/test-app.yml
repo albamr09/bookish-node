@@ -1,4 +1,4 @@
-name: CI App Docker
+name: Build and Test
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
         run: docker ps -a
       - name: Check logs of database
         run: docker logs mongodb
-      - name: Start containers 
+      - name: Start app 
         run: docker-compose -f docker-compose.dev.yml up -d app
       - name: Check running containers
         run: docker ps -a

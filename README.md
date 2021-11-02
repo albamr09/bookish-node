@@ -1,9 +1,9 @@
 # bookish-node 
 
-Simple Book API.
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://mit-license.org/)
+[![Actions Status](https://github.com/albamr09/bookish-node/workflows/Build%20and%20Test/badge.svg)](https://github.com/albamr09/bookish-node/actions)
 
+Simple Book API.
 
 ## Dependencies
 
