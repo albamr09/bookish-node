@@ -17,6 +17,7 @@ jobs:
         env: 
           PORT: 8000
           HOST: 127.0.0.1
+          TOKEN_SECRET: 3f7a024d942c85a87ab9812a0d8cbf792fe2cbe3422ca3d8b94cd056c1f37d1514085032b557260407b6ef65877733aa4b97d96fcf744096e7491e2d9eb87f61
           APP_DIR: "./src"
           DB_ROOT_USER: devroot
           DB_ROOT_PASSWORD: devroot
