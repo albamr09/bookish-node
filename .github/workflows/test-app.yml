@@ -37,7 +37,6 @@ jobs:
           REDOC_SRC: "./config/.redoc/src"
           REDOC_CONF: "./config/.redoc/config/nginx.conf"
         run: |
-          echo 
           docker-compose -f docker-compose.dev.yml build --no-cache
           docker-compose -f docker-compose.dev.yml up
           docker-compose -f docker-compose.dev.yml run app sh -c "npm test"

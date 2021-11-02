@@ -34,11 +34,15 @@ jobs:
       REDOC_DIR: "./config/.redoc"
       REDOC_SRC: "./config/.redoc/src"
       REDOC_CONF: "./config/.redoc/config/nginx.conf"
+      COMPOSE_VERSION: '1.29.2'
     steps:
       - checkout
       - run:
           name: "Build and test app"
           command: |
+            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
             docker-compose -f docker-compose.dev.yml build --no-cache
             docker-compose -f docker-compose.dev.yml run app sh -c "npm test"
 
