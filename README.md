@@ -1,9 +1,13 @@
-# bookish-node 
-
 <p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
-  <img src="https://github.com/albamr09/bookish-node/workflows/Build%20and%20Test/badge.svg" alt="Build status"/>
+  <a href="https://mit-license.org/"> 
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
+  </a>
+  <a href="https://github.com/albamr09/bookish-node/actions"> 
+    <img src="https://github.com/albamr09/bookish-node/workflows/Build%20and%20Test/badge.svg" alt="Build Status"/>
+  </a>
 </p>
+
+# bookish-node 
 
 Simple Book API.
 
