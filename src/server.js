@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const app = require('./app')
 
-console.log(process.env.DB_URI)
-
 // Initialize DB and start server
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
