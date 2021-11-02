@@ -12,7 +12,7 @@ services:
       - ./src/:/home/user/src/
       - /home/user/src/node_modules
     command: >
-      sh -c "npm start &"
+      sh -c "npm run dev"
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
