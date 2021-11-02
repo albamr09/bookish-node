@@ -2,6 +2,10 @@
 
 Simple Book API.
 
+![example workflow](https://github.com/albamr09/bookish-node/actions/workflows/test-app/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://mit-license.org/)
+
+
 ## Dependencies
 
 | Name | Version |
