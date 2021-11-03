@@ -62,8 +62,8 @@ beforeEach(async () => {
   await User.deleteMany()
 })
 
-describe('Unathenticated Get Book Api Test', () => {
-  it('Get Book', async () => {
+describe('Unathenticated Book Api Test', () => {
+  it('GET Book', async () => {
     const response = await request
       .get(`${BOOKS_URL}/1`)
 
@@ -72,14 +72,34 @@ describe('Unathenticated Get Book Api Test', () => {
     expect(response.body).toHaveProperty('code', 'A001')
     expect(response.body).toHaveProperty('message', Code.A001.value)
   })
+
+  it('PUT Book', async () => {
+    const response = await request
+      .put(`${BOOKS_URL}/1`)
+
+    expect(response.statusCode).toBe(401)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'A001')
+    expect(response.body).toHaveProperty('message', Code.A001.value)
+  })
+
+  it('DLETE Book', async () => {
+    const response = await request
+      .delete(`${BOOKS_URL}/1`)
+
+    expect(response.statusCode).toBe(401)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'A001')
+    expect(response.body).toHaveProperty('message', Code.A001.value)
+  })
 })
 
-describe('Authenticated Get Book Api Test', () => {
+describe('Authenticated GET Book Api Test', () => {
   beforeAll(async () => {
     await signUser()
   })
 
-  it('Get Book by id successfully', async () => {
+  it('GET Book by id successfully', async () => {
     const newBookData = { ...bookData, author: { ...bookData.author } }
     newBookData.isbn = '978-3-16-148410-1'
 
@@ -104,7 +124,7 @@ describe('Authenticated Get Book Api Test', () => {
     expect(response.body.book.author[0]).toHaveProperty('name', book.author[0].name)
   })
 
-  it('Get Book by with non existing id', async () => {
+  it('GET Book by with non existing id', async () => {
     const newBookData = { ...bookData, author: { ...bookData.author } }
     newBookData.isbn = '978-3-16-148410-1'
 
@@ -120,4 +140,157 @@ describe('Authenticated Get Book Api Test', () => {
     expect(response.body).toHaveProperty('code', 'B001')
     expect(response.body).toHaveProperty('message', Code.B001.value)
   })
+})
+
+const testRequired = async (attribute) => {
+  const newBookData = { ...bookData, author: { ...bookData.author } }
+  delete newBookData[attribute]
+
+  const book = await createBook(bookData)
+
+  const response = await request
+    .set('Authorization', `Bearer ${token}`)
+    .put(`${BOOKS_URL}/${book._id}`)
+    .send(newBookData)
+
+  expect(response.statusCode).toBe(400)
+  expect(response.body).toHaveProperty('success', false)
+  expect(response.body).toHaveProperty('code', 'B002')
+  expect(response.body).toHaveProperty('message')
+  expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code.B002.value}: ${attribute}`))
+}
+
+const testInvalid = async (attribute, value) => {
+  const newBookData = { ...bookData, author: { ...bookData.author } }
+  newBookData[attribute] = value
+
+  const book = await createBook(bookData)
+
+  const response = await request
+    .set('Authorization', `Bearer ${token}`)
+    .put(`${BOOKS_URL}/${book._id}`)
+    .send(newBookData)
+
+  expect(response.statusCode).toBe(400)
+  expect(response.body).toHaveProperty('success', false)
+  expect(response.body).toHaveProperty('code', 'B003')
+  expect(response.body).toHaveProperty('message')
+  expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code.B003.value}: ${attribute}`))
+}
+
+describe('Authenticated PUT Book Api Test', () => {
+  beforeAll(async () => {
+    await signUser()
+  })
+
+  it('PUT Book successfull', async () => {
+    const newBookData = { ...bookData, author: { ...bookData.author } }
+    newBookData.isbn = '978-3-16-148410-1'
+    newBookData.title = 'newtitle'
+
+    const book = await createBook(bookData)
+
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .put(`${BOOKS_URL}/${book._id}`)
+      .send(newBookData)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('success', true)
+    expect(response.body).toHaveProperty('book')
+    expect(response.body.book).toHaveProperty('isbn', newBookData.isbn)
+    expect(response.body.book).toHaveProperty('title', newBookData.title)
+    expect(response.body.book).toHaveProperty('edition', newBookData.edition)
+    expect(response.body.book).toHaveProperty('year_published', newBookData.year_published)
+    expect(response.body.book).toHaveProperty('publisher', newBookData.publisher)
+    expect(response.body.book).toHaveProperty('language', newBookData.language)
+    expect(response.body.book).toHaveProperty('genre', newBookData.genre)
+    expect(response.body.book).toHaveProperty('author')
+    expect(response.body.book.author.length).toBe(1)
+    expect(response.body.book.author[0]).toHaveProperty('name', newBookData.author.name)
+  })
+
+  it('PUT Book without required isbn', async () => {
+    await testRequired('isbn')
+  })
+
+  it('PUT Book without required title', async () => {
+    await testRequired('title')
+  })
+
+  it('PUT Book without required language', async () => {
+    await testRequired('language')
+  })
+
+  it('PUT Book without required author', async () => {
+    await testRequired('author')
+  })
+
+  it('PUT Book with invalid isbn', async () => {
+    await testInvalid('isbn', '1')
+  })
+
+  it('PUT Book with invalid year_published (negative)', async () => {
+    await testInvalid('year_published', -1)
+  })
+
+  it('PUT Book with invalid year_published (future)', async () => {
+    await testInvalid('year_published', new Date().getFullYear() + 1)
+  })
+
+  it('PUT Book with invalid edition', async () => {
+    await testInvalid('edition', -1)
+  })
+  it('PUT Book with invalid language', async () => {
+    await testInvalid('language', 'whatever')
+  })
+  it('PUT Book with invalid genre', async () => {
+    await testInvalid('genre', 'whatevergenre')
+  })
+
+  it('PUT Book with non existing id', async () => {
+    const newBookData = { ...bookData, author: { ...bookData.author } }
+    newBookData.isbn = '978-3-16-148410-1'
+
+    await createBook(bookData)
+    await createBook(newBookData)
+
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .put(`${BOOKS_URL}/111111111111111111111111`)
+      .send(newBookData)
+
+    expect(response.statusCode).toBe(404)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'B001')
+    expect(response.body).toHaveProperty('message', Code.B001.value)
+  })
+
+  // describe('Authenticated DELETE Api Test', () => {
+  //   beforeAll(async () => {
+  //     await signUser()
+  //   })
+
+  //   it('DELETE Book successfully', async () => {
+  //     const book = await createBook(bookData)
+
+  //     const response = await request
+  //       .set('Authorization', `Bearer ${token}`)
+  //       .delete(`${BOOKS_URL}/${book._id}`)
+
+  //     expect(response.statusCode).toBe(204)
+  //     expect(response.body).toHaveProperty('success', true)
+  //     expect(response.body).toHaveProperty('message', true)
+  //   })
+
+  //   it('DELETE Book without id', async () => {
+  //     expect(1).toBe(1)
+  //   })
+
+  //   it('DELETE Book with non existing id', async () => {
+  //     expect(1).toBe(1)
+  //   })
+  // })
 })

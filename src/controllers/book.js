@@ -78,8 +78,7 @@ const createBook = async (req, res) => {
         `${error}`.includes(ErrorMessage.M015.value) ||
         `${error}`.includes(ErrorMessage.M012.value)) {
           errorObject = new ApiError(Code.B002, Object.keys(error.errors))
-        } else if (`${error}`.includes(ErrorMessage.M011.value) ||
-          `${error}`.includes(ErrorMessage.M008.value) ||
+        } else if (`${error}`.includes(ErrorMessage.M008.value) ||
           `${error}`.includes(ErrorMessage.M009.value) ||
           `${error}`.includes(ErrorMessage.M010.value) ||
           `${error}`.includes(ErrorMessage.M011.value) ||
@@ -127,13 +126,81 @@ const getBookById = async (req, res) => {
 }
 
 const updateBook = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const {
+      isbn,
+      title,
+      year_published,
+      publisher,
+      edition,
+      language,
+      genre,
+      author
+    } = req.body
+
+    await Book.findOneAndReplace({ _id: id },
+      {
+        isbn,
+        title,
+        year_published,
+        publisher,
+        edition,
+        language,
+        genre,
+        author
+      },
+      { returnDocument: 'after' }
+    ).then((result) => {
+      if (!result) return res.status(404).json({ ...new ApiError(Code.B001) })
+
+      return res.status(200).json({
+        book: {
+          id: result.id,
+          isbn: result.isbn,
+          title: result.title,
+          edition: result.edition,
+          year_published: result.year_published,
+          author: result.author,
+          publisher: result.publisher,
+          language: result.language,
+          genre: result.genre
+        },
+        success: true
+      })
+    }).catch((error) => {
+      let errorObject
+      if (`${error}`.includes(ErrorMessage.M005.value) ||
+        `${error}`.includes(ErrorMessage.M006.value) ||
+        `${error}`.includes(ErrorMessage.M007.value) ||
+        `${error}`.includes(ErrorMessage.M015.value)
+      ) {
+        errorObject = new ApiError(Code.B002, Object.keys(error.errors))
+      } else if (`${error}`.includes(ErrorMessage.M008.value) ||
+           `${error}`.includes(ErrorMessage.M009.value) ||
+           `${error}`.includes(ErrorMessage.M010.value) ||
+           `${error}`.includes(ErrorMessage.M011.value) ||
+           `${error}`.includes(ErrorMessage.M013.value) ||
+           `${error}`.includes(ErrorMessage.M014.value)) {
+        errorObject = new ApiError(Code.B003, Object.keys(error.errors))
+      }
+
+      return res.status(400).json({ ...errorObject })
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error)
+  }
 }
 
 const deleteBook = async (req, res) => {
+  res.status(404).send('hola')
 }
 
 const patchBook = async (req, res) => {
 }
+
 module.exports = {
   getBooks,
   createBook,

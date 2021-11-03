@@ -10,7 +10,7 @@ const signUp = async (req, res) => {
       .then((result) => {
         // Create a token
         const token = jwt.sign({ id: result._id }, process.env.TOKEN_SECRET, {
-          expiresIn: '4800'
+          expiresIn: '7200'
         })
 
         return res.status(201).json({

@@ -14,6 +14,6 @@ const authenticateToken = require('../middleware/authJWT')
 
 router.use('/', authenticateToken)
 router.route('/').get(getBooks).post(createBook)
-router.route('/:id').get(getBookById, updateBook, deleteBook, patchBook)
+router.route('/:id').get(getBookById).put(updateBook).delete(deleteBook).patch(patchBook)
 
 module.exports = router
