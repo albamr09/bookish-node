@@ -32,7 +32,8 @@ const Code = new Enum({
   B001: 'No book was found',
   B002: 'Missing required fields',
   B003: 'Data is not valid',
-  B004: 'This ISBN is already registered'
+  B004: 'This ISBN is already registered',
+  S001: 'There was an error on the server while processing the request'
 })
 
 class ApiError {

@@ -52,7 +52,7 @@ const getBooks = async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 
@@ -103,7 +103,7 @@ const createBook = async (req, res) => {
       })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 
@@ -132,7 +132,7 @@ const getBookById = async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 
@@ -183,7 +183,7 @@ const updateBook = async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 
@@ -199,11 +199,11 @@ const deleteBook = async (req, res) => {
         return res.status(204).send()
       }).catch((error) => {
         console.error(error)
-        return res.status(500).send(error)
+        return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
       })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 
@@ -254,7 +254,7 @@ const patchBook = async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}`) })
   }
 }
 

@@ -37,7 +37,7 @@ const signUp = async (req, res) => {
       })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}}`) })
   }
 }
 
@@ -78,7 +78,7 @@ const login = async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error)
+    return res.status(500).json({ ...new ApiError(Code.S001, ` ${error}}`) })
   }
 }
 

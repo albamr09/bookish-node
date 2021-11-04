@@ -122,17 +122,11 @@ paths:
                   success:
                     type: boolean
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
         "404":
-          description: The specified resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
     post:
@@ -157,17 +151,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessBook'
         "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
   /books/{id}:
@@ -196,24 +184,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessBook'
-        "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
         "404":
-          description: The specified resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
     put:
@@ -249,23 +225,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessBook'
         "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
         "404":
-          description: The specified resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
     delete:
@@ -289,32 +255,12 @@ paths:
       responses:
         "204":
           description: Book deleted successfully.
-          content: 
-            application/json:
-              schema:
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
         "404":
-          description: The specified resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
     patch:
@@ -350,23 +296,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessBook'
         "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/Unauthorized'
         "404":
-          description: The specified resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
       security:
       - Bearer: []
   /users/login:
@@ -406,16 +342,14 @@ paths:
                   success:
                     type: boolean
         "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /users/signup:
+          $ref: '#/components/responses/BadRequest'
+        "500":
+          $ref: '#/components/responses/ServerError'
+  /users/sign-up:
     post:
       tags:
       - Users
-      summary: Logs the user in.
+      summary: Creates a new user.
       description: |
         A new `User` is created with the data provided.
       operationId: createUser
@@ -427,7 +361,7 @@ paths:
               $ref: '#/components/schemas/NewUser'
         required: true
       responses:
-        "200":
+        "201":
           description: User created successfully.
           content:
             application/json:
@@ -449,11 +383,9 @@ paths:
                     type: boolean
 
         "400":
-          description: The request is not correct
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/BadRequest'
+        "500":
+          $ref: '#/components/responses/ServerError'
 components:
   schemas:
     BasicUser:
@@ -520,7 +452,9 @@ components:
           type: string
           example: "1984"
         author:
-          $ref: '#/components/schemas/Author'
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
         publisher:
           type: string
           example: Penguin Random House
@@ -646,6 +580,12 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Server error while processing the request
       content:
         application/json:
           schema:
