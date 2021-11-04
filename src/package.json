@@ -8,7 +8,7 @@
     "dev": "nodemon server",
     "lint": "./node_modules/.bin/eslint .",
     "localTest": "jest --watchAll --no-cache --detectOpenHandles",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache --detectOpenHandles"
   },
   "repository": {
     "type": "git",

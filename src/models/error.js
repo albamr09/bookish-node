@@ -18,6 +18,10 @@ const ErrorMessage = new Enum({
   M015: 'Author required'
 })
 
+const Message = new Enum({
+  M001: 'Bookish API is connected'
+})
+
 const Code = new Enum({
   U001: 'User already exists',
   U002: 'Missing required fields',
@@ -40,4 +44,4 @@ class ApiError {
   }
 }
 
-module.exports = { Code, ApiError, ErrorMessage }
+module.exports = { Code, ApiError, ErrorMessage, Message }

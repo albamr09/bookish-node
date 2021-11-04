@@ -89,7 +89,7 @@ describe('Sign Up User', () => {
     expect(response.body).toHaveProperty('code', 'U002')
     expect(response.body).toHaveProperty('message')
     expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code.U002.value}: email`))
+      .toEqual(expect.stringContaining(`${Code.U002.value}: email`))
   })
 
   it('Create new user without required password', async () => {
@@ -107,7 +107,7 @@ describe('Sign Up User', () => {
     expect(response.body).toHaveProperty('code', 'U002')
     expect(response.body).toHaveProperty('message')
     expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code.U002.value}: password`))
+      .toEqual(expect.stringContaining(`${Code.U002.value}: password`))
   })
 
   it('Create new user with invalid email', async () => {

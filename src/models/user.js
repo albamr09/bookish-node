@@ -12,7 +12,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, ErrorMessage.M002.value],
     unique: true,
-    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, ErrorMessage.M004.value],
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, ErrorMessage.M004.value]
   },
   password: {
     type: String,

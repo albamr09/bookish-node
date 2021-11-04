@@ -83,9 +83,19 @@ describe('Unathenticated Book Api Test', () => {
     expect(response.body).toHaveProperty('message', Code.A001.value)
   })
 
-  it('DLETE Book', async () => {
+  it('DELETE Book', async () => {
     const response = await request
       .delete(`${BOOKS_URL}/1`)
+
+    expect(response.statusCode).toBe(401)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'A001')
+    expect(response.body).toHaveProperty('message', Code.A001.value)
+  })
+
+  it('PATCH Book', async () => {
+    const response = await request
+      .patch(`${BOOKS_URL}/1`)
 
     expect(response.statusCode).toBe(401)
     expect(response.body).toHaveProperty('success', false)
@@ -161,7 +171,7 @@ const testRequired = async (attribute) => {
     .toEqual(expect.stringContaining(`${Code.B002.value}: ${attribute}`))
 }
 
-const testInvalid = async (attribute, value) => {
+const testInvalid = async (attribute, value, code) => {
   const newBookData = { ...bookData, author: { ...bookData.author } }
   newBookData[attribute] = value
 
@@ -174,10 +184,10 @@ const testInvalid = async (attribute, value) => {
 
   expect(response.statusCode).toBe(400)
   expect(response.body).toHaveProperty('success', false)
-  expect(response.body).toHaveProperty('code', 'B003')
+  expect(response.body).toHaveProperty('code', code)
   expect(response.body).toHaveProperty('message')
   expect(response.body.message.toString())
-    .toEqual(expect.stringContaining(`${Code.B003.value}: ${attribute}`))
+    .toEqual(expect.stringContaining(`${Code[code].value}: ${attribute}`))
 }
 
 describe('Authenticated PUT Book Api Test', () => {
@@ -229,25 +239,31 @@ describe('Authenticated PUT Book Api Test', () => {
   })
 
   it('PUT Book with invalid isbn', async () => {
-    await testInvalid('isbn', '1')
+    await testInvalid('isbn', '1', 'B003')
+  })
+
+  it('PUT Book with invalid title', async () => {
+    await testInvalid('title', '', 'B002')
   })
 
   it('PUT Book with invalid year_published (negative)', async () => {
-    await testInvalid('year_published', -1)
+    await testInvalid('year_published', -1, 'B003')
   })
 
   it('PUT Book with invalid year_published (future)', async () => {
-    await testInvalid('year_published', new Date().getFullYear() + 1)
+    await testInvalid('year_published', new Date().getFullYear() + 1, 'B003')
   })
 
   it('PUT Book with invalid edition', async () => {
-    await testInvalid('edition', -1)
+    await testInvalid('edition', -1, 'B003')
   })
+
   it('PUT Book with invalid language', async () => {
-    await testInvalid('language', 'whatever')
+    await testInvalid('language', 'whatever', 'B003')
   })
+
   it('PUT Book with invalid genre', async () => {
-    await testInvalid('genre', 'whatevergenre')
+    await testInvalid('genre', 'whatevergenre', 'B003')
   })
 
   it('PUT Book with non existing id', async () => {
@@ -267,30 +283,177 @@ describe('Authenticated PUT Book Api Test', () => {
     expect(response.body).toHaveProperty('code', 'B001')
     expect(response.body).toHaveProperty('message', Code.B001.value)
   })
+})
 
-  // describe('Authenticated DELETE Api Test', () => {
-  //   beforeAll(async () => {
-  //     await signUser()
-  //   })
+describe('Authenticated DELETE Api Test', () => {
+  beforeAll(async () => {
+    await signUser()
+  })
 
-  //   it('DELETE Book successfully', async () => {
-  //     const book = await createBook(bookData)
+  it('DELETE Book successfully', async () => {
+    const book = await createBook(bookData)
 
-  //     const response = await request
-  //       .set('Authorization', `Bearer ${token}`)
-  //       .delete(`${BOOKS_URL}/${book._id}`)
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .delete(`${BOOKS_URL}/${book._id}`)
 
-  //     expect(response.statusCode).toBe(204)
-  //     expect(response.body).toHaveProperty('success', true)
-  //     expect(response.body).toHaveProperty('message', true)
-  //   })
+    expect(response.statusCode).toBe(204)
+  })
 
-  //   it('DELETE Book without id', async () => {
-  //     expect(1).toBe(1)
-  //   })
+  it('DELETE Book with non existing id', async () => {
+    const newBookData = { ...bookData, author: { ...bookData.author } }
+    newBookData.isbn = '978-3-16-148410-1'
 
-  //   it('DELETE Book with non existing id', async () => {
-  //     expect(1).toBe(1)
-  //   })
-  // })
+    await createBook(bookData)
+    await createBook(newBookData)
+
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .delete(`${BOOKS_URL}/111111111111111111111111`)
+
+    expect(response.statusCode).toBe(404)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'B001')
+    expect(response.body).toHaveProperty('message', Code.B001.value)
+  })
+})
+
+const testRequiredPatch = async (attribute) => {
+  const newBookData = {
+    [attribute]: null
+  }
+
+  const book = await createBook(bookData)
+
+  const response = await request
+    .set('Authorization', `Bearer ${token}`)
+    .patch(`${BOOKS_URL}/${book._id}`)
+    .send(newBookData)
+
+  expect(response.statusCode).toBe(400)
+  expect(response.body).toHaveProperty('success', false)
+  expect(response.body).toHaveProperty('code', 'B002')
+  expect(response.body).toHaveProperty('message')
+  expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code.B002.value}: ${attribute}`))
+}
+
+const testInvalidPatch = async (attribute, value, code) => {
+  const newBookData = {
+    [attribute]: value
+  }
+
+  const book = await createBook(bookData)
+
+  const response = await request
+    .set('Authorization', `Bearer ${token}`)
+    .patch(`${BOOKS_URL}/${book._id}`)
+    .send(newBookData)
+
+  expect(response.statusCode).toBe(400)
+  expect(response.body).toHaveProperty('success', false)
+  expect(response.body).toHaveProperty('code', code)
+  expect(response.body).toHaveProperty('message')
+  expect(response.body.message.toString())
+    .toEqual(expect.stringContaining(`${Code[code].value}: ${attribute}`))
+}
+
+describe('Authenticated PATCH Book Api Test', () => {
+  beforeAll(async () => {
+    await signUser()
+  })
+
+  it('PATCH Book successfull', async () => {
+    const newBookData = {
+      isbn: '978-3-16-148410-1',
+      title: 'newtitle',
+      author: {
+        name: 'newauthor',
+        birth_date: Date.now()
+      }
+    }
+
+    const book = await createBook(bookData)
+
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .patch(`${BOOKS_URL}/${book._id}`)
+      .send(newBookData)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('success', true)
+    expect(response.body).toHaveProperty('book')
+    expect(response.body.book).toHaveProperty('isbn', newBookData.isbn)
+    expect(response.body.book).toHaveProperty('title', newBookData.title)
+    expect(response.body.book).toHaveProperty('edition', bookData.edition)
+    expect(response.body.book).toHaveProperty('year_published', bookData.year_published)
+    expect(response.body.book).toHaveProperty('publisher', bookData.publisher)
+    expect(response.body.book).toHaveProperty('language', bookData.language)
+    expect(response.body.book).toHaveProperty('genre', bookData.genre)
+    expect(response.body.book).toHaveProperty('author')
+    expect(response.body.book.author.length).toBe(1)
+    expect(response.body.book.author[0]).toHaveProperty('name', newBookData.author.name)
+  })
+
+  it('PATCH Book without required isbn', async () => {
+    await testRequiredPatch('isbn')
+  })
+
+  it('PATCH Book without required title', async () => {
+    await testRequiredPatch('title')
+  })
+
+  it('PATCH Book without required language', async () => {
+    await testRequiredPatch('language')
+  })
+
+  it('PATCH Book without required author', async () => {
+    await testRequiredPatch('author')
+  })
+
+  it('PATCH Book with invalid isbn', async () => {
+    await testInvalidPatch('isbn', '1', 'B003')
+  })
+
+  it('PATCH Book with invalid title', async () => {
+    await testInvalidPatch('title', '', 'B002')
+  })
+
+  it('PATCH Book with invalid year_published (negative)', async () => {
+    await testInvalidPatch('year_published', -1, 'B003')
+  })
+
+  it('PATCH Book with invalid year_published (future)', async () => {
+    await testInvalidPatch('year_published', new Date().getFullYear() + 1, 'B003')
+  })
+
+  it('PATCH Book with invalid edition', async () => {
+    await testInvalidPatch('edition', -1, 'B003')
+  })
+
+  it('PATCH Book with invalid language', async () => {
+    await testInvalidPatch('language', 'whatever', 'B003')
+  })
+
+  it('PATCH Book with invalid genre', async () => {
+    await testInvalidPatch('genre', 'whatevergenre', 'B003')
+  })
+
+  it('PATCH Book with non existing id', async () => {
+    const newBookData = {
+      isbn: '978-3-16-148410-1'
+    }
+
+    await createBook(bookData)
+
+    const response = await request
+      .set('Authorization', `Bearer ${token}`)
+      .patch(`${BOOKS_URL}/111111111111111111111111`)
+      .send(newBookData)
+
+    expect(response.statusCode).toBe(404)
+    expect(response.body).toHaveProperty('success', false)
+    expect(response.body).toHaveProperty('code', 'B001')
+    expect(response.body).toHaveProperty('message', Code.B001.value)
+  })
 })

@@ -44,5 +44,5 @@ jobs:
       - name: Check logs of database
         run: docker logs mongodb
       - name: Run test
-        run: docker exec bookish_node_dev sh -c "npm run test"
+        run: docker exec bookish_node_dev sh -c "npm test && npm run lint"
 

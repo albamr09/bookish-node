@@ -2,6 +2,12 @@
 
 | **CODE** | **Message** |
 |---|---|
+| M001 | 'Bookish API is connected' |
+
+# ErrorMessage Codes
+
+| **CODE** | **Message** |
+|---|---|
 | M001 | 'duplicate key error collection' |
 | M002 | 'Email required' |
 | M003 | 'Password required' |

@@ -288,6 +288,10 @@ describe('Authenticated Create Books Api Test', () => {
     await testInvalid('isbn', '1', 'B003')
   })
 
+  it('Create a book with invalid title', async () => {
+    await testInvalid('isbn', '', 'B002')
+  })
+
   it('Create a book with invalid year published (negative)', async () => {
     await testInvalid('year_published', -1, 'B003')
   })
