@@ -48,5 +48,5 @@ jobs:
       - name: Build docker images 
         run: docker-compose -f docker-compose.yml build --no-cache
       - name: Run test
-        run: docker-compose -f "../docker-compose.yml" run app sh -c "npm test && npm run lint"
+        run: docker-compose -f "docker-compose.yml" run app sh -c "npm test && npm run lint"
 
