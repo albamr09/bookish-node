@@ -2,22 +2,21 @@ version: "3"
 
 secrets:
   DB_ROOT_USER:
-    file: ./config/.secrets/db_root_user
+    file: ${SECRETS_DIR}/db_root_user
   DB_ROOT_PASSWORD:
-    file: ./config/.secrets/db_root_passwd
+    file: ${SECRETS_DIR}/db_root_passwd
   DB_PASSWORD:
-    file: ./config/.secrets/db_passwd
+    file: ${SECRETS_DIR}/db_passwd
   DB_USER:
-    file: ./config/.secrets/db_user
+    file: ${SECRETS_DIR}/db_user
   TOKEN_SECRET:
-    file: ./config/.secrets/token_secret
+    file: ${SECRETS_DIR}/token_secret
   DB_URI:
-    file: ./config/.secrets/db_uri
+    file: ${SECRETS_DIR}/db_uri
   DB_NAME:
-    file: ./config/.secrets/db_name
+    file: ${SECRETS_DIR}/db_name
 
 services:
-  # Development service
   app:
     container_name: 'bookish_node'
     build:
@@ -40,8 +39,6 @@ services:
       - TOKEN_SECRET
       - DB_URI
 
-
-  # Production based database
   db:
     container_name: "mongodb"
     image: mongo

@@ -31,6 +31,7 @@ jobs:
       REDOC_DIR: ${{ secrets.REDOC_DIR }}
       REDOC_SRC: ${{ secrets.REDOC_SRC }}
       REDOC_CONF: ${{ secrets.REDOC_CONF }}
+      SECRETS_DIR: ${{ secrets.SECRETS_DIR }}
 
     steps:
       - name: Checkout
