@@ -41,6 +41,7 @@ jobs:
           ls -lha
       - name: Create docker secrets
         run: |
+          mkdir -p ${{ secrets.SECRETS_DIR }}
           echo ${{ secrets.DB_ROOT_USER }} > ${{ secrets.SECRETS_DIR }}"/db_root_user"
           echo ${{ secrets.DB_ROOT_PASSWORD }} > ${{ secrets.SECRETS_DIR }}"/db_root_passwd"
           echo ${{ secrets.DB_USER }} > ${{ secrets.SECRETS_DIR }}"/db_user"
