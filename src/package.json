@@ -4,11 +4,11 @@
   "description": "## Set Up",
   "main": "app.js",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server",
+    "start": "TOKEN_SECRET=$(cat $TOKEN_SECRET_FILE) DB_URI=$(cat $DB_URI_FILE) NODE_ENV=production node server",
+    "dev": "NODE_ENV=dev Enodemon server",
     "lint": "./node_modules/.bin/eslint .",
-    "localTest": "jest --watchAll --no-cache --detectOpenHandles",
-    "test": "jest --no-cache --detectOpenHandles"
+    "localTest": "TOKEN_SECRET=$(cat $TOKEN_SECRET_FILE) DB_URI=$(cat $DB_URI_FILE) jest --watchAll --no-cache --detectOpenHandles",
+    "test": "TOKEN_SECRET=$(cat $TOKEN_SECRET_FILE) DB_URI=$(cat $DB_URI_FILE) jest --no-cache --detectOpenHandles"
   },
   "repository": {
     "type": "git",

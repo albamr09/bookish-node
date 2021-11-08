@@ -1,11 +1,20 @@
 version: "3"
 
-# Secrets for production version (look into using external)
 secrets:
-  MONGO_ROOT_PASSWORD:
-    file: .secrets/mongo-root-passwd
-  MONGO_USER_PASSWORD:
-    file: .secrets/mongo-user-passwd
+  DB_ROOT_USER:
+    file: ./config/.secrets/db_root_user
+  DB_ROOT_PASSWORD:
+    file: ./config/.secrets/db_root_passwd
+  DB_PASSWORD:
+    file: ./config/.secrets/db_passwd
+  DB_USER:
+    file: ./config/.secrets/db_user
+  TOKEN_SECRET:
+    file: ./config/.secrets/token_secret
+  DB_URI:
+    file: ./config/.secrets/db_uri
+  DB_NAME:
+    file: ./config/.secrets/db_name
 
 services:
   # Development service
@@ -20,32 +29,30 @@ services:
       - /home/user/src/node_modules
     command: >
       sh -c "npm start"
-    #TODO: use external secrets
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
-      - TOKEN_SECRET=${TOKEN_SECRET}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_PORT=${DB_PORT}
-      - DB_URI=${DB_URI}
+      - TOKEN_SECRET_FILE=/var/run/secrets/TOKEN_SECRET
+      - DB_URI_FILE=/var/run/secrets/DB_URI
     depends_on:
       - db
+    secrets:
+      - TOKEN_SECRET
+      - DB_URI
+
 
   # Production based database
   db:
     image: mongo
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USER}
-      - MONGO_INITDB_ROOT_PASSWORD_FILE=/var/run/secrets/MONGO_ROOT_PASSWORD
-      - MONGO_INITDB_USERNAME=${DB_USER}
-      - MONGO_INITDB_PASSWORD_FILE=/var/run/secrets/MONGO_USER_PASSWORD
-      - MONGO_INITDB_DATABASE=${DB_NAME}
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/var/run/secrets/DB_ROOT_USER
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/var/run/secrets/DB_ROOT_PASSWORD
+      - MONGO_INITDB_USERNAME_FILE=/var/run/secrets/DB_USER
+      - MONGO_INITDB_PASSWORD_FILE=/var/run/secrets/DB_PASSWORD
+      - MONGO_INITDB_DATABASE_FILE=/var/run/secrets/DB_NAME
     ports:
       - '${DB_PORT}:27017'
-
     volumes:
       # Make data persist on local folder named ./mongo-volume
       - ${DB_DATA}:/data/db
@@ -57,8 +64,11 @@ services:
     command: ["-f", "/etc/mongo/mongod.conf"]
     # Credentials stored as secrets
     secrets:
-      - MONGO_ROOT_PASSWORD
-      - MONGO_USER_PASSWORD
+      - DB_USER
+      - DB_PASSWORD
+      - DB_ROOT_USER
+      - DB_ROOT_PASSWORD
+      - DB_NAME
 
   # Api doc
   swagger-ui:

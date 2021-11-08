@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [ main, dev, deploy ]
+    branches: [ deploy ]
 
 jobs:
 
@@ -35,10 +35,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Create docker secrets
+        run: |
+          echo ${{ secrets.DB_ROOT_USER }} > ${{ SECRETS_DIR }}"/db_root_user"
+          echo ${{ secrets.DB_ROOT_PASSWORD }} > ${{ SECRETS_DIR }}"/db_root_passwd"
+          echo ${{ secrets.DB_USER }} > ${{ SECRETS_DIR }}"/db_user"
+          echo ${{ secrets.DB_PASSWORD }} > ${{ SECRETS_DIR }}"/db_passwd"
+          echo ${{ secrets.TOKEN_SECRET }} > ${{ SECRETS_DIR }}"/token_secret"
+          echo ${{ secrets.DB_URI }} > ${{ SECRETS_DIR }}"/db_uri"
+          echo ${{ secrets.DB_NAME }} > ${{ SECRETS_DIR }}"/db_name"
       - name: Build docker images 
-        run: docker-compose -f docker-compose.dev.yml build --no-cache
+        run: docker-compose -f docker-compose.yml build --no-cache
       - name: Start containers 
-        run: docker-compose -f docker-compose.dev.yml up -d app
+        run: docker-compose -f docker-compose.yml up -d app
       - name: Check running containers
         run: docker ps -a
       - name: Check logs of database

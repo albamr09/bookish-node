@@ -1,3 +1,5 @@
 #!/usr/bin/bash
 
-docker-compose -f ../docker-compose.dev.yml --env-file ../config/.env/.env.dev build --no-cache
+./createSecrets.sh
+
+docker-compose -f ../docker-compose.yml --env-file ../config/.env/.env build --no-cache
