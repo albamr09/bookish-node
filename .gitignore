@@ -1,5 +1,4 @@
 src/node_modules/
-scripts/*
 config/.docker/mongo-volume/
 config/.env/
 config/.secrets/
