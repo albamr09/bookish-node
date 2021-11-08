@@ -24,13 +24,6 @@ jobs:
       DB_INIT: ${{ secrets.DB_INIT }}
       DB_DATA: ${{ secrets.DB_CONFIG }}
       DB_URI: ${{ secrets.DB_URI }}
-      SWAGGER_PORT: ${{ secrets.SWAGGER_PORT }}
-      SWAGGER_DIR: ${{ secrets.SWAGGER_DIR }}
-      SWAGGER_API_URL: ${{ secrets.SWAGGER_API_URL }}
-      REDOC_PORT: ${{ secrets.REDOC_PORT }}
-      REDOC_DIR: ${{ secrets.REDOC_DIR }}
-      REDOC_SRC: ${{ secrets.REDOC_SRC }}
-      REDOC_CONF: ${{ secrets.REDOC_CONF }}
 
     steps:
       - name: Checkout
