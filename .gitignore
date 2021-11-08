@@ -2,5 +2,4 @@ src/node_modules/
 config/.docker/mongo-volume/
 config/.env/
 config/.secrets/
-.travis.yml
 docker-compose.yml

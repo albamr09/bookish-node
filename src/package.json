@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server",
+    "dev": "NODE_ENV=dev nodemon server",
     "lint": "./node_modules/.bin/eslint .",
     "localTest": "jest --watchAll --no-cache --detectOpenHandles",
     "test": "jest --no-cache --detectOpenHandles"
