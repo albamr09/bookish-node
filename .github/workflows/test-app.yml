@@ -46,8 +46,6 @@ jobs:
           echo ${{ secrets.TOKEN_SECRET }} > ${{ secrets.SECRETS_DIR }}"/token_secret"
           echo ${{ secrets.DB_URI }} > ${{ secrets.SECRETS_DIR }}"/db_uri"
           echo ${{ secrets.DB_NAME }} > ${{ secrets.SECRETS_DIR }}"/db_name"
-      - name: Check db_uri
-        run: cat ${{ secrets.SECRETS_DIR }}"/db_uri"
       - name: Build docker images 
         run: docker-compose -f docker-compose.yml build --no-cache
       - name: Run test
