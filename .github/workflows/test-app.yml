@@ -47,12 +47,6 @@ jobs:
           echo ${{ secrets.DB_NAME }} > ${{ secrets.SECRETS_DIR }}"/db_name"
       - name: Build docker images 
         run: docker-compose -f docker-compose.yml build --no-cache
-      - name: Start containers 
-        run: docker-compose -f docker-compose.yml up -d app
-      - name: Check running containers
-        run: docker ps -a
-      - name: Check logs of database
-        run: docker logs mongodb
       - name: Run test
-        run: docker exec bookish_node sh -c "npm test && npm run lint"
+        run: docker-compose -f "../docker-compose.yml" --env-file "../config/.env/.env" run app sh -c "npm test && npm run lint"
 
