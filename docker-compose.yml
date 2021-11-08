@@ -43,6 +43,7 @@ services:
 
   # Production based database
   db:
+    container_name: "mongodb"
     image: mongo
     restart: always
     environment:
